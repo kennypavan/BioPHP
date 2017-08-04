@@ -1,2 +1,2 @@
 # BioPHP
-BioPHP implements some light tools for manipulating genomic data.
+BioPHP is an open source project that implements some light tools for manipulating genomic data.
