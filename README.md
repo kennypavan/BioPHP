@@ -8,4 +8,5 @@ $BioPHP = new BioPHP('ATGAAa');
 $BioPHP->reverseSequence();
 $BioPHP->complementDnaSequence();
 echo $BioPHP->sequenceA;
+// prints TTTCAT
 ```
