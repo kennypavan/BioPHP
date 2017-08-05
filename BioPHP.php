@@ -55,6 +55,8 @@ class BioPHP {
 
 }
 
+
+//Sample Usage
 $BioPHP = new BioPHP('ATGAAa');
 $BioPHP->reverseSequence();
 $BioPHP->complementDnaSequence();
