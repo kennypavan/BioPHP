@@ -3,7 +3,7 @@ BioPHP is an easy to use, open source project. BioPHP implements a selection of 
 
 ## Simple Usage:
 
-### Fine Reverse Complement
+### Find Reverse Complement
 ```php
 $BioPHP = new BioPHP('ATGAAA');
 $BioPHP->reverseSequence();
@@ -19,7 +19,7 @@ echo $BioPHP->gcContent();
 //prints 11
 ```
 
-### Count point mutations between two sequences
+### Count Point Mutations Between Two Sequences
 ```php
 $BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCA','CTGATGATGCGAGGGAATATCG');
 echo $BioPHP->countPointMutations();
