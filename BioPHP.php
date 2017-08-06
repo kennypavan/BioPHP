@@ -14,10 +14,9 @@ class BioPHP {
 
 	public $sequenceA;
 	public $sequenceB;
-	public $sequenceC;
 
 
-	public function __construct($sequenceA=false, $sequenceB=false, $sequenceC=false)
+	public function __construct($sequenceA=false, $sequenceB=false)
 	{
 		$this->sequenceA = $sequenceA;
 		$this->normalizeSequence();
