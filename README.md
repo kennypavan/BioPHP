@@ -22,6 +22,6 @@ echo $BioPHP->gcContent();
 ### Count point mutations between two sequences
 ```php
 $BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCA','CTGATGATGCGAGGGAATATCG');
-echo $BioPHP->countPointMutations()."\n";
+echo $BioPHP->countPointMutations();
 //prints 4
 ```
