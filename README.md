@@ -16,7 +16,7 @@ echo $BioPHP->sequenceA;
 ```php
 $BioPHP = new BioPHP('ATGAAAGCATC');
 echo $BioPHP->gcContent();
-//prints 11
+//prints 36.3636
 ```
 
 ### Count Point Mutations Between Two Sequences
