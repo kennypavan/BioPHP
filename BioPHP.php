@@ -32,7 +32,7 @@ class BioPHP {
 
  		$this->sequenceA = strtoupper($this->sequenceA);
  		$this->sequenceB = strtoupper($this->sequenceB);
-		return $this;
+		return $this->sequenceA;
 
 	}
 
@@ -41,7 +41,7 @@ class BioPHP {
  	{
 
  		$this->sequenceA = strrev($this->sequenceA);
-		return $this;
+		return $this->sequenceA;
 
 	}
 
@@ -54,7 +54,7 @@ class BioPHP {
 		$this->sequenceA = str_replace("G", "c", $this->sequenceA);
 		$this->sequenceA = str_replace("C", "g", $this->sequenceA);
 		$this->normalizeSequence();
-		return $this;
+		return $this->sequenceA;
 
 	}
 
@@ -82,7 +82,8 @@ class BioPHP {
 	public function convertRnaToDna()
 	{
 
-		return str_replace("U","T",$this->sequenceA);
+		$this->sequenceA = str_replace("U","T",$this->sequenceA);
+		return $this->sequenceA;
 
 	}
 
@@ -151,7 +152,25 @@ class BioPHP {
 		return $proteinSequence;
 	}
 
+	//sequence A is a substring of sequence B
+	public function findMotifDNA()
+	{
 
+		$tLen = strlen($this->sequenceA);
+		$sLen = strlen($this->sequenceB);
+
+		for($i=0; $i<=$sLen; $i++)
+		{
+			
+			if(substr($this->sequenceB, $i, $tLen) == $this->sequenceA){
+				$results[] = $i+1;
+			}
+
+		}
+
+		return implode(" ",$results);
+
+	}
 
 }
 
@@ -178,12 +197,19 @@ $BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCA','CTGATGATGCGAGGGAATATCG');
 echo $BioPHP->countPointMutations()."\n";
 
 
+//Sample Usage - Convert RNA to DNA
+$BioPHP = new BioPHP('ACGCGAUUGCGAUCGAUGCACGCU');
+echo $BioPHP->convertRnaToDna()."\n";
+
+
 //Sample Usage - Translate sequence to amino acid
 $BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCAGA');
 echo $BioPHP->translateDna()."\n";
 
-//Sample Usage - Convert RNA to DNA
-$BioPHP = new BioPHP('ACGCGAUUGCGAUCGAUGCACGCU');
-echo $BioPHP->convertRnaToDna()."\n";
+
+//Sample Usage - Finding a Motif in DNA
+$BioPHP = new BioPHP('ATAT', 'GTATATCTATATGGCCATAT');
+echo $BioPHP->findMotifDNA()."\n";
+
 
 ?>

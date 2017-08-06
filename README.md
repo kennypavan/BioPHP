@@ -32,3 +32,10 @@ $BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCAGA');
 echo $BioPHP->translateDna();
 //prints LMMGGNFR
 ```
+
+### Finding a Motif in DNA
+```php
+$BioPHP = new BioPHP('ATAT', 'GTATATCTATATGGCCATAT');
+echo $BioPHP->findMotifDNA();
+//prints 3 9 17
+```
