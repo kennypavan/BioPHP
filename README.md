@@ -3,10 +3,25 @@ BioPHP is an easy to use, open source project. BioPHP implements a selection of 
 
 ## Simple Usage:
 
+### Fine Reverse Complement
 ```php
-$BioPHP = new BioPHP('ATGAAa');
+$BioPHP = new BioPHP('ATGAAA');
 $BioPHP->reverseSequence();
 $BioPHP->complementDnaSequence();
 echo $BioPHP->sequenceA;
-// prints TTTCAT
+//prints TTTCAT
+```
+
+### Calculate GC Content
+```php
+$BioPHP = new BioPHP('ATGAAAGCATC');
+echo $BioPHP->gcContent();
+//prints 11
+```
+
+### Count point mutations between two sequences
+```php
+$BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCA','CTGATGATGCGAGGGAATATCG');
+echo $BioPHP->countPointMutations()."\n";
+//prints 4
 ```

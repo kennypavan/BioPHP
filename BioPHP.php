@@ -19,6 +19,7 @@ class BioPHP {
 	public function __construct($sequenceA=false, $sequenceB=false)
 	{
 		$this->sequenceA = $sequenceA;
+		$this->sequenceB = $sequenceB;
 		$this->normalizeSequence();
 	}
 
@@ -27,6 +28,7 @@ class BioPHP {
 	{
 
  		$this->sequenceA = strtoupper($this->sequenceA);
+ 		$this->sequenceB = strtoupper($this->sequenceB);
 		return $this;
 
 	}
@@ -52,12 +54,86 @@ class BioPHP {
 
 	}
 
+	public function countNucleotides()
+	{
+
+		return strlen($this->sequenceA);
+
+	}
+
+
+	public function gcContent($precision = 2)
+	{
+
+
+		$g = substr_count($this->sequenceA, 'G');
+		$c = substr_count($this->sequenceA, 'C');
+
+		return number_format( ( ($g+$c) / strlen($this->sequenceA) ) * 100 , $precision);
+
+	}
+
+
+	public function countPointMutations()
+	{
+
+		$totalMutations = 0;
+
+		if(strlen($this->sequenceA) >= strlen($this->sequenceB)){
+
+			$longestSequenceLength = strlen($this->sequenceA);
+
+		} else {
+			
+			$longestSequenceLength = strlen($this->sequenceB);
+
+		}
+		
+
+		for($i=0; $i < $longestSequenceLength; $i++)
+		{
+
+			if (isset($this->sequenceA[$i]) && isset($this->sequenceB[$i]) ) {
+
+				if($this->sequenceA[$i] != $this->sequenceB[$i]) {
+					$totalMutations++;
+				}				
+
+			} else {
+
+				$totalMutations++;
+
+			}
+
+		
+		}
+
+		return $totalMutations;
+
+	}
+
+
 }
 
 
-//Sample Usage
-$BioPHP = new BioPHP('ATGAAa');
+//Sample Usage - Find Reverse Complement
+$BioPHP = new BioPHP('ATGAAAGCATC');
 $BioPHP->reverseSequence();
 $BioPHP->complementDnaSequence();
-echo $BioPHP->sequenceA;
+echo $BioPHP->sequenceA."\n";
+
+
+//Sample Usage - Get Nucleotide Count
+$BioPHP = new BioPHP('ATGAAAGCATC');
+echo $BioPHP->countNucleotides()."\n";
+
+
+//Sample Usage - Get GC Content Percentage
+$BioPHP = new BioPHP('ATGAAAGCATC');
+echo $BioPHP->gcContent(4)."\n";
+
+
+//Sample Usage - Count point Mutations between two sequences
+$BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCA','CTGATGATGCGAGGGAATATCG');
+echo $BioPHP->countPointMutations()."\n";
 ?>
