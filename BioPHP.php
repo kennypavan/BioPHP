@@ -13,7 +13,12 @@ class BioPHP {
 
 
 	public $sequenceA;
+
 	public $sequenceB;
+	
+	public $codonToAminos = array("ATT" => "I", "ATC" => "I", "ATA" =>"I","CTT" => "L", "CTC" => "L", "CTA" => "L", "CTG" => "L", "TTA" => "L", "TTG" => "L", "GTT" => "V", "GTC" => "V", "GTA" =>"V", "GTG" =>"V","TTT" => "F", "TTC" => "F","ATG" => "M","TGT" => "C", "TGC" => "C", "GCT" => "A", "GCC" => "A", "GCA" => "A", "GCG" => "A", "GGT" => "G", "GGC" => "G", "GGA" => "G", "GGG" => "G", "CCT" => "P", "CCC" => "P", "CCA" => "P", "CCG" => "P", "ACT" => "T", "ACC" => "T", "ACA" => "T", "ACG" => "T", "TCT" => "S", "TCC" => "S", "TCA" => "S", "TCG" => "S", "AGT" => "S", "AGC" => "S", "TAT" => "Y", "TAC" => "Y", "TGG" => "W", "CAA" => "Q", "CAG" => "Q", "AAT" => "N", "AAC" => "N", "CAT" => "H", "CAC" => "H", "GAA" => "E", "GAG" => "E", "GAT" => "D", "GAC" => "D", "AAA" => "K", "AAG" => "K", "CGT" => "R", "CGC" => "R", "CGA" => "R", "CGG" => "R", "AGA" => "R", "AGG" => "R", "TAA" => "*", "TAG" => "*", "TGA" => "*" //stop codon
+    );
+
 
 
 	public function __construct($sequenceA=false, $sequenceB=false)
@@ -113,6 +118,33 @@ class BioPHP {
 	}
 
 
+	public function translateDna($offset = 0){
+
+		$sequence = substr($this->sequenceA, $offset);  //offset reading frame for future use.
+		$sequenceCodons = str_split($sequence, 3);
+
+		$proteinSequence = "";
+
+		foreach ($sequenceCodons as $sequenceCodon) 
+		{
+		  
+			if(isset($this->codonToAminos[$sequenceCodon])){
+
+				$proteinSequence .= $this->codonToAminos[$sequenceCodon]; 
+
+			} else {
+
+				$proteinSequence .= "-"; //unknown
+
+			}
+
+		}
+
+		return $proteinSequence;
+	}
+
+
+
 }
 
 
@@ -136,4 +168,9 @@ echo $BioPHP->gcContent(4)."\n";
 //Sample Usage - Count point Mutations between two sequences
 $BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCA','CTGATGATGCGAGGGAATATCG');
 echo $BioPHP->countPointMutations()."\n";
+
+
+//Sample Usage - Translate sequence to amino acid
+$BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCAGA');
+echo $BioPHP->translateDna()."\n";
 ?>

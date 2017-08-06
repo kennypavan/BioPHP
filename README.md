@@ -25,3 +25,10 @@ $BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCA','CTGATGATGCGAGGGAATATCG');
 echo $BioPHP->countPointMutations();
 //prints 4
 ```
+
+### Translate DNA Sequence to Amino Acid Sequence
+```php
+$BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCAGA');
+echo $BioPHP->translateDna();
+//prints LMMGGNFR
+```
