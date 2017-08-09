@@ -172,6 +172,19 @@ class BioPHP {
 
 	}
 
+
+	public function getReadingFrames(){
+		
+		
+		$frameOne = $this->sequenceA;
+		$frameTwo = substr($this->sequenceA, 1);
+		$frameThree = substr($this->sequenceA, 2);
+		$readingFrames = [$frameOne,$frameTwo,$frameThree];
+
+		return $readingFrames;
+
+	}
+
 }
 
 
@@ -210,6 +223,12 @@ echo $BioPHP->translateDna()."\n";
 //Sample Usage - Finding a Motif in DNA
 $BioPHP = new BioPHP('ATAT', 'GTATATCTATATGGCCATAT');
 echo $BioPHP->findMotifDNA()."\n";
+
+
+//Sample Usage - Finding a Motif in DNA
+$BioPHP = new BioPHP('GTATATCTATATGGCCATAT');
+print_r( $BioPHP->getReadingFrames() );
+echo "\n";
 
 
 ?>

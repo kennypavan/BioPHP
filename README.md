@@ -39,3 +39,18 @@ $BioPHP = new BioPHP('ATAT', 'GTATATCTATATGGCCATAT');
 echo $BioPHP->findMotifDNA();
 //prints 3 9 17
 ```
+
+### Get all three reading frames
+```php
+$BioPHP = new BioPHP('GTATATCTATATGGCCATAT');
+print_r( $BioPHP->getReadingFrames() );
+
+//returns array containing...
+Array
+(
+    [0] => GTATATCTATATGGCCATAT
+    [1] => TATATCTATATGGCCATAT
+    [2] => ATATCTATATGGCCATAT
+)
+
+```
