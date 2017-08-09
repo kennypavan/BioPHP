@@ -16,7 +16,9 @@ class BioPHP {
 
 	public $sequenceB;
 	
-	public $codonToAminos = array("ATT" => "I", "ATC" => "I", "ATA" =>"I","CTT" => "L", "CTC" => "L", "CTA" => "L", "CTG" => "L", "TTA" => "L", "TTG" => "L", "GTT" => "V", "GTC" => "V", "GTA" =>"V", "GTG" =>"V","TTT" => "F", "TTC" => "F","ATG" => "M","TGT" => "C", "TGC" => "C", "GCT" => "A", "GCC" => "A", "GCA" => "A", "GCG" => "A", "GGT" => "G", "GGC" => "G", "GGA" => "G", "GGG" => "G", "CCT" => "P", "CCC" => "P", "CCA" => "P", "CCG" => "P", "ACT" => "T", "ACC" => "T", "ACA" => "T", "ACG" => "T", "TCT" => "S", "TCC" => "S", "TCA" => "S", "TCG" => "S", "AGT" => "S", "AGC" => "S", "TAT" => "Y", "TAC" => "Y", "TGG" => "W", "CAA" => "Q", "CAG" => "Q", "AAT" => "N", "AAC" => "N", "CAT" => "H", "CAC" => "H", "GAA" => "E", "GAG" => "E", "GAT" => "D", "GAC" => "D", "AAA" => "K", "AAG" => "K", "CGT" => "R", "CGC" => "R", "CGA" => "R", "CGG" => "R", "AGA" => "R", "AGG" => "R", "TAA" => "*", "TAG" => "*", "TGA" => "*" ); // * equals stop codon
+	public $codonToAminos = ["ATT" => "I", "ATC" => "I", "ATA" =>"I", "CTT" => "L", "CTC" => "L", "CTA" => "L", "CTG" => "L", "TTA" => "L", "TTG" => "L", "GTT" => "V", "GTC" => "V", "GTA" =>"V", "GTG" =>"V","TTT" => "F", "TTC" => "F","ATG" => "M","TGT" => "C", "TGC" => "C", "GCT" => "A", "GCC" => "A", "GCA" => "A", "GCG" => "A", "GGT" => "G", "GGC" => "G", "GGA" => "G", "GGG" => "G", "CCT" => "P", "CCC" => "P", "CCA" => "P", "CCG" => "P", "ACT" => "T", "ACC" => "T", "ACA" => "T", "ACG" => "T", "TCT" => "S", "TCC" => "S", "TCA" => "S", "TCG" => "S", "AGT" => "S", "AGC" => "S", "TAT" => "Y", "TAC" => "Y", "TGG" => "W", "CAA" => "Q", "CAG" => "Q", "AAT" => "N", "AAC" => "N", "CAT" => "H", "CAC" => "H", "GAA" => "E", "GAG" => "E", "GAT" => "D", "GAC" => "D", "AAA" => "K", "AAG" => "K", "CGT" => "R", "CGC" => "R", "CGA" => "R", "CGG" => "R", "AGA" => "R", "AGG" => "R", "TAA" => "*", "TAG" => "*", "TGA" => "*" ]; // * equals stop codon
+
+	public $monisotopicAminoMass = ["A" => 71.03711, "C" => 103.00919, "D" => 115.02694, "E" => 129.04259, "F" => 147.06841, "G" => 57.02146, "H" => 137.05891, "I" => 113.08406, "K" => 128.09496, "L" => 113.08406, "M" => 131.04049, "N" => 114.04293, "P" => 97.05276, "Q" => 128.05858, "R" => 156.10111, "S" => 87.03203, "T" => 101.04768, "V" => 99.06841, "W" => 186.07931, "Y" => 163.06333];
 
 
 	public function __construct($sequenceA=false, $sequenceB=false)
@@ -173,7 +175,8 @@ class BioPHP {
 	}
 
 
-	public function getReadingFrames(){
+	public function getReadingFrames()
+	{
 		
 		
 		$frameOne = $this->sequenceA;
@@ -185,6 +188,28 @@ class BioPHP {
 
 	}
 
+
+	public function calcMonoIsotopicMass($proteinSequence)
+	{
+		
+		$proteinLen = strlen($proteinSequence);
+		$mass = 0;
+
+		for($i=0; $i<=$proteinLen; $i++)
+		{
+			
+			if( isset( $this->monisotopicAminoMass[substr($proteinSequence, $i, 1)] ) ){
+				$mass = $mass + $this->monisotopicAminoMass[substr($proteinSequence, $i, 1)];
+			}
+
+		}		
+
+
+		return $mass;
+
+	}
+
+
 }
 
 
@@ -194,21 +219,17 @@ $BioPHP->reverseSequence();
 $BioPHP->complementDnaSequence();
 echo $BioPHP->sequenceA."\n";
 
-
 //Sample Usage - Get Nucleotide Count
 $BioPHP = new BioPHP('ATGAAAGCATC');
 echo $BioPHP->countNucleotides()."\n";
-
 
 //Sample Usage - Get GC Content Percentage
 $BioPHP = new BioPHP('ATGAAAGCATC');
 echo $BioPHP->gcContent(4)."\n";
 
-
 //Sample Usage - Count point Mutations between two sequences
 $BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCA','CTGATGATGCGAGGGAATATCG');
 echo $BioPHP->countPointMutations()."\n";
-
 
 //Sample Usage - Convert RNA to DNA
 $BioPHP = new BioPHP('ACGCGAUUGCGAUCGAUGCACGCU');
@@ -219,16 +240,17 @@ echo $BioPHP->convertRnaToDna()."\n";
 $BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCAGA');
 echo $BioPHP->translateDna()."\n";
 
-
 //Sample Usage - Finding a Motif in DNA
 $BioPHP = new BioPHP('ATAT', 'GTATATCTATATGGCCATAT');
 echo $BioPHP->findMotifDNA()."\n";
 
-
-//Sample Usage - Finding a Motif in DNA
+//Sample Usage - Get all reading frames (in one direction)
 $BioPHP = new BioPHP('GTATATCTATATGGCCATAT');
 print_r( $BioPHP->getReadingFrames() );
 echo "\n";
 
-
+//Sample Usage - Calculate monoisotopic mass
+$BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCAGA');
+$proteinSequence = $BioPHP->translateDna()."\n";
+echo $BioPHP->calcMonoIsotopicMass($proteinSequence)."\n";
 ?>

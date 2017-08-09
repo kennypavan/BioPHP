@@ -6,8 +6,8 @@ BioPHP is an easy to use, open source project. BioPHP implements a selection of 
 ### Find Reverse Complement
 ```php
 $BioPHP = new BioPHP('ATGAAA');
-$BioPHP->reverseSequence();
-$BioPHP->complementDnaSequence();
+$BioPHP->reverseSequence(); //reverse sequence
+$BioPHP->complementDnaSequence(); //get the reversed complement
 echo $BioPHP->sequenceA;
 //prints TTTCAT
 ```
@@ -31,6 +31,14 @@ echo $BioPHP->countPointMutations();
 $BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCAGA');
 echo $BioPHP->translateDna();
 //prints LMMGGNFR
+```
+
+### Calculate monoisotopic mass
+```php
+$BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCAGA');
+$proteinSequence = $BioPHP->translateDna()."\n"; //translate sequence
+echo $BioPHP->calcMonoIsotopicMass($proteinSequence)."\n"; //calculate mass
+//prints 906.42041
 ```
 
 ### Finding a Motif in DNA
