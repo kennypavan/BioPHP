@@ -33,7 +33,7 @@ echo $BioPHP->translateDna();
 //prints LMMGGNFR
 ```
 
-### Calculate monoisotopic mass
+### Calculate Monoisotopic Mass
 ```php
 $BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCAGA');
 $proteinSequence = $BioPHP->translateDna()."\n"; //translate sequence
@@ -48,7 +48,7 @@ echo $BioPHP->findMotifDNA();
 //prints 3 9 17
 ```
 
-### Get all three reading frames
+### Get Reading Frames
 ```php
 $BioPHP = new BioPHP('GTATATCTATATGGCCATAT');
 print_r( $BioPHP->getReadingFrames() );
@@ -62,4 +62,6 @@ Array
     [2] => ATATCTATATGGCCATAT
 )
 */
+
+//Protip: to get all 6 reading frames. Use the reverse and complement methods, then pass the result to getReadingFrames()
 ```
