@@ -235,12 +235,54 @@ class BioPHP {
 
 
 
-	public function mostLikelyCommonAncestor($SequencesArray)
+	public function mostLikelyCommonAncestor($sequencesArray)
 	{
 		
-		
-		// create multi dimensional matrix to calculate likely ancestor.
+		$countNucleotides = [];
 
+		foreach ($sequencesArray as $key => $value) {
+			
+			$sequence = str_split($value['sequence']);
+
+			for ($i=0; $i<count($sequence);$i++){
+
+				if(!array_key_exists($i, $countNucleotides)){
+					$countNucleotides[$i]["A"] = 0;
+					$countNucleotides[$i]["T"] = 0;
+					$countNucleotides[$i]["G"] = 0;
+					$countNucleotides[$i]["C"] = 0;
+				}
+
+				if($sequence[$i] == "A"){
+					$countNucleotides[$i]["A"]++;
+				} elseif($sequence[$i] == "T"){
+					$countNucleotides[$i]["T"]++;
+				} elseif($sequence[$i] == "G"){
+					$countNucleotides[$i]["G"]++;
+				} elseif($sequence[$i] == "C"){
+					$countNucleotides[$i]["C"]++;
+				}				
+
+			}
+
+		}
+
+		$mostLikelyCommonAncestorSequence = "";
+		for($i=0;$i<count($countNucleotides);$i++){
+
+			$mostLikelyCommonAncestorSequence .= array_search(max($countNucleotides[$i]), $countNucleotides[$i]);
+
+		}
+
+		/*
+		echo "\n";
+		echo "A: "; for($i=0;$i<count($countNucleotides);$i++){ echo $countNucleotides[$i]['A']." ";} echo "\n";
+		echo "C: "; for($i=0;$i<count($countNucleotides);$i++){ echo $countNucleotides[$i]['C']." ";} echo "\n";
+		echo "G: "; for($i=0;$i<count($countNucleotides);$i++){ echo $countNucleotides[$i]['G']." ";} echo "\n";
+		echo "T: "; for($i=0;$i<count($countNucleotides);$i++){ echo $countNucleotides[$i]['T']." ";} echo "\n";
+		*/
+
+		return $mostLikelyCommonAncestorSequence;
 
 	}
 
@@ -324,34 +366,16 @@ $proteinSequence = $BioPHP->translateDna()."\n";
 echo $BioPHP->calcMonoIsotopicMass($proteinSequence)."\n\n";
 
 
-
-
-//Sample Usage - Read fasta file
-
-$fasta = ">Rosalind_1
+//Sample Usage - Find most common likely ancestor
+$fasta = "
+>Sequence 1
 ATCCAGCT
->Rosalind_2
+>Sequence 2
 GGGCAACT
->Rosalind_3
+>Sequence 3
 ATGGATCT
->Rosalind_4
-AAGCAACC
->Rosalind_5
-TTGGAACT
->sp|B5ZC00|SYG_UREU1 Glycine--tRNA ligase OS=Ureaplasma urealyticum serovar 10 (strain ATCC 33699 / Western) GN=glyQS PE=3 SV=1
-MKNKFKTQEELVNHLKTVGFVFANSEIYNGLANAWDYGPLGVLLKNNLKNLWWKEFVTKQ
-KDVVGLDSAIILNPLVWKASGHLDNFSDPLIDCKNCKARYRADKLIESFDENIHIAENSS
-NEEFAKVLNDYEISCPTCKQFNWTEIRHFNLMFKTYQGVIEDAKNVVYLRPETAQGIFVN
-FKNVQRSMRLHLPFGIAQIGKSFRNEITPGNFIFRTREFEQMEIEFFLKEESAYDIFDKY
-LNQIENWLVSACGLSLNNLRKHEHPKEELSHYSKKTIDFEYNFLHGFSELYGIAYRTNYD
-LSVHMNLSKKDLTYFDEQTKEKYVPHVIEPSVGVERLLYAILTEATFIEKLENDDERILM
-DLKYDLAPYKIAVMPLVNKLKDKAEEIYGKILDLNISATFDNSGSIGKRYRRQDAIGTIY
-CLTIDFDSLDDQQDPSFTIRERNSMAQKRIKLSELPLYLNQKAHEDFQRQCQK
->Rosalind_7
-ATGGCACT";
-
+";
 $BioPHP = new BioPHP();
-$BioPHP->readFasta($fasta);
-echo "\n";
-
+$fastaArray = $BioPHP->readFasta($fasta);
+echo $BioPHP->mostLikelyCommonAncestor($fastaArray)."\n";
 ?>

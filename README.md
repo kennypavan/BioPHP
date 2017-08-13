@@ -65,3 +65,22 @@ Array
 
 //Protip: To get all 6 reading frames. Use the reverse and complement methods, then pass the result to getReadingFrames()
 ```
+
+
+### Find most common likely ancestor
+```php
+$fastaSequence = "
+>Sequence 1
+ATCCAGCT
+>Sequence 2
+GGGCAACT
+>Sequence 3
+ATGGATCT
+";
+
+$BioPHP = new BioPHP();
+$fastaArray = $BioPHP->readFasta($fastaSequence); //read and parse the sequences
+echo $BioPHP->mostLikelyCommonAncestor($fastaArray)."\n";
+
+//prints ATGCAACT
+```
