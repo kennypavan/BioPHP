@@ -209,13 +209,27 @@ class BioPHP {
 
 	}
 
-	
+	//read fasta as a string and return an array.
 	public function readFasta($fastaStr)
 	{
 		
-		
-		//read fasta as a string and return an array.
+		$fastaLines = explode('>', $fastaStr);
 
+		foreach ($fastaLines as $fastaLine) {
+
+			$singleLines = preg_split('/$\R?^/m', $fastaLine);
+
+			$sequence = "";
+
+			for ($i=1;$i<count($singleLines);$i++) {
+				$sequence .= str_replace(array("\r", "\n"), '',$singleLines[$i]);
+			}
+			
+			$fastaArray[] = ["name" => $singleLines[0], "sequence" => $sequence];
+			
+		}
+
+		return $fastaArray;
 
 	}
 
@@ -307,5 +321,37 @@ echo "\n";
 //Sample Usage - Calculate monoisotopic mass
 $BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCAGA');
 $proteinSequence = $BioPHP->translateDna()."\n";
-echo $BioPHP->calcMonoIsotopicMass($proteinSequence)."\n";
+echo $BioPHP->calcMonoIsotopicMass($proteinSequence)."\n\n";
+
+
+
+
+//Sample Usage - Read fasta file
+
+$fasta = ">Rosalind_1
+ATCCAGCT
+>Rosalind_2
+GGGCAACT
+>Rosalind_3
+ATGGATCT
+>Rosalind_4
+AAGCAACC
+>Rosalind_5
+TTGGAACT
+>sp|B5ZC00|SYG_UREU1 Glycine--tRNA ligase OS=Ureaplasma urealyticum serovar 10 (strain ATCC 33699 / Western) GN=glyQS PE=3 SV=1
+MKNKFKTQEELVNHLKTVGFVFANSEIYNGLANAWDYGPLGVLLKNNLKNLWWKEFVTKQ
+KDVVGLDSAIILNPLVWKASGHLDNFSDPLIDCKNCKARYRADKLIESFDENIHIAENSS
+NEEFAKVLNDYEISCPTCKQFNWTEIRHFNLMFKTYQGVIEDAKNVVYLRPETAQGIFVN
+FKNVQRSMRLHLPFGIAQIGKSFRNEITPGNFIFRTREFEQMEIEFFLKEESAYDIFDKY
+LNQIENWLVSACGLSLNNLRKHEHPKEELSHYSKKTIDFEYNFLHGFSELYGIAYRTNYD
+LSVHMNLSKKDLTYFDEQTKEKYVPHVIEPSVGVERLLYAILTEATFIEKLENDDERILM
+DLKYDLAPYKIAVMPLVNKLKDKAEEIYGKILDLNISATFDNSGSIGKRYRRQDAIGTIY
+CLTIDFDSLDDQQDPSFTIRERNSMAQKRIKLSELPLYLNQKAHEDFQRQCQK
+>Rosalind_7
+ATGGCACT";
+
+$BioPHP = new BioPHP();
+$BioPHP->readFasta($fasta);
+echo "\n";
+
 ?>
