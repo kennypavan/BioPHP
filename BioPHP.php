@@ -217,14 +217,18 @@ class BioPHP {
 		
 		$fastaLines = explode('>', $fastaStr);
 
-		foreach ($fastaLines as $fastaLine) {
+		foreach ($fastaLines as $fastaLine) 
+		{
 
 			$singleLines = preg_split('/$\R?^/m', $fastaLine);
 
 			$sequence = "";
 
-			for ($i=1;$i<count($singleLines);$i++) {
+			for ($i=1;$i<count($singleLines);$i++) 
+			{
+			
 				$sequence .= str_replace(array("\r", "\n"), '',$singleLines[$i]);
+			
 			}
 			
 			$fastaArray[] = ["name" => $singleLines[0], "sequence" => $sequence];
@@ -270,7 +274,9 @@ class BioPHP {
 		}
 
 		$mostLikelyCommonAncestorSequence = "";
-		for($i=0;$i<count($countNucleotides);$i++){
+		
+		for($i=0;$i<count($countNucleotides);$i++)
+		{
 
 			$mostLikelyCommonAncestorSequence .= array_search(max($countNucleotides[$i]), $countNucleotides[$i]);
 
