@@ -154,6 +154,7 @@ class BioPHP {
 		return $proteinSequence;
 	}
 
+
 	//sequence A is a substring of sequence B
 	public function findMotifDNA()
 	{
@@ -208,6 +209,7 @@ class BioPHP {
 		return $mass;
 
 	}
+
 
 	//read fasta as a string and return an array.
 	public function readFasta($fastaStr)
@@ -274,18 +276,9 @@ class BioPHP {
 
 		}
 
-		/*
-		echo "\n";
-		echo "A: "; for($i=0;$i<count($countNucleotides);$i++){ echo $countNucleotides[$i]['A']." ";} echo "\n";
-		echo "C: "; for($i=0;$i<count($countNucleotides);$i++){ echo $countNucleotides[$i]['C']." ";} echo "\n";
-		echo "G: "; for($i=0;$i<count($countNucleotides);$i++){ echo $countNucleotides[$i]['G']." ";} echo "\n";
-		echo "T: "; for($i=0;$i<count($countNucleotides);$i++){ echo $countNucleotides[$i]['T']." ";} echo "\n";
-		*/
-
 		return $mostLikelyCommonAncestorSequence;
 
 	}
-
 
 
 	public function getUniprotID($UniprotID)
@@ -297,6 +290,7 @@ class BioPHP {
 
 	}
 
+
 	public function varyingFormsGeneration($varyingSubSequence)
 	{
 		
@@ -305,8 +299,6 @@ class BioPHP {
 
 
 	}
-
-
 
 
 	public function findMotifProtein($varyingSubSequence,$proteinSequence)
@@ -319,7 +311,6 @@ class BioPHP {
 		// search for motifs in the sequence
 
 	}
-
 
 
 }
