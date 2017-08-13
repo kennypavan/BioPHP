@@ -214,7 +214,7 @@ class BioPHP {
 	{
 		
 		
-		
+		//read fasta as a string and return an array.
 
 
 	}
@@ -225,7 +225,7 @@ class BioPHP {
 	{
 		
 		
-		
+		// create multi dimensional matrix to calculate likely ancestor.
 
 
 	}
@@ -235,7 +235,7 @@ class BioPHP {
 	public function getUniprotID($UniprotID)
 	{
 		
-		
+		//curl request to http://www.uniprot.org/uniprot/uniprot_id.fasta
 		
 
 
@@ -256,8 +256,11 @@ class BioPHP {
 	public function findMotifProtein($varyingSubSequence,$proteinSequence)
 	{
 
-		// find the variations
+		// find the variations in subsequence
 
+		// get sequence from uniprot
+
+		// search for motifs in the sequence
 
 	}
 
