@@ -63,5 +63,5 @@ Array
 )
 */
 
-//Protip: to get all 6 reading frames. Use the reverse and complement methods, then pass the result to getReadingFrames()
+//Protip: To get all 6 reading frames. Use the reverse and complement methods, then pass the result to getReadingFrames()
 ```

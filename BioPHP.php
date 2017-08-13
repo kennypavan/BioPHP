@@ -209,6 +209,59 @@ class BioPHP {
 
 	}
 
+	
+	public function readFasta($fastaStr)
+	{
+		
+		
+		
+
+
+	}
+
+
+
+	public function mostLikelyCommonAncestor($SequencesArray)
+	{
+		
+		
+		
+
+
+	}
+
+
+
+	public function getUniprotID($UniprotID)
+	{
+		
+		
+		
+
+
+	}
+
+	public function varyingFormsGeneration($varyingSubSequence)
+	{
+		
+		
+		// To allow for the presence of its varying forms, a protein motif is represented by a shorthand as follows: [XY] means "either X or Y" and {X} means "any amino acid except X." For example, the N-glycosylation motif is written as N{P}[ST]{P}.		
+
+
+	}
+
+
+
+
+	public function findMotifProtein($varyingSubSequence,$proteinSequence)
+	{
+
+		// find the variations
+
+
+	}
+
+
 
 }
 
@@ -234,7 +287,6 @@ echo $BioPHP->countPointMutations()."\n";
 //Sample Usage - Convert RNA to DNA
 $BioPHP = new BioPHP('ACGCGAUUGCGAUCGAUGCACGCU');
 echo $BioPHP->convertRnaToDna()."\n";
-
 
 //Sample Usage - Translate sequence to amino acid
 $BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCAGA');
