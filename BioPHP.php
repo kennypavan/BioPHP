@@ -287,12 +287,17 @@ class BioPHP {
 	}
 
 
-	public function getUniprotID($UniprotID)
+	public function getUniprotFastaByID($uniprotID)
 	{
 		
-		//curl request to http://www.uniprot.org/uniprot/uniprot_id.fasta
 		
+		$ch = curl_init(); 
+		curl_setopt($ch, CURLOPT_URL, "http://www.uniprot.org/uniprot/".$uniprotID.".fasta"); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+		$output = curl_exec($ch); 
+		curl_close($ch);  		
 
+		return $output;
 
 	}
 
@@ -375,4 +380,11 @@ ATGGATCT
 $BioPHP = new BioPHP();
 $fastaArray = $BioPHP->readFasta($fasta);
 echo $BioPHP->mostLikelyCommonAncestor($fastaArray)."\n";
+
+
+//Sample Usage - Get a fasta result from Uniprot amd calculate its Isotpoic Mass
+$BioPHP = new BioPHP();
+$uniprotFasta =  $BioPHP->getUniprotFastaByID("B5ZC00");
+$fastaArray = $BioPHP->readFasta($uniprotFasta);
+echo $BioPHP->calcMonoIsotopicMass($fastaArray[1]['sequence'])."\n";
 ?>

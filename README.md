@@ -84,3 +84,14 @@ echo $BioPHP->mostLikelyCommonAncestor($fastaArray)."\n";
 
 //prints ATGCAACT
 ```
+
+
+### Get a fasta result from Uniprot amd calculate isotpoic mass
+```php
+$BioPHP = new BioPHP();
+$uniprotFasta =  $BioPHP->getUniprotFastaByID("B5ZC00"); //returns the result from Uniprot as a string
+$fastaArray = $BioPHP->readFasta($uniprotFasta); //parses the response
+echo $BioPHP->calcMonoIsotopicMass($fastaArray[1]['sequence'])."\n";
+
+//prints 55319.0636
+```
