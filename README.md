@@ -86,7 +86,7 @@ echo $BioPHP->mostLikelyCommonAncestor($fastaArray)."\n";
 ```
 
 
-### Get a fasta result from Uniprot amd calculate isotpoic mass
+### Get a fasta result from Uniprot and calculate isotpoic mass
 ```php
 $BioPHP = new BioPHP();
 $uniprotFasta =  $BioPHP->getUniprotFastaByID("B5ZC00"); //returns the result from Uniprot as a string
