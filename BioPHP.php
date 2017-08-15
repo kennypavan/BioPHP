@@ -161,7 +161,7 @@ class BioPHP {
 
 		$tLen = strlen($this->sequenceA);
 		$sLen = strlen($this->sequenceB);
-		$results = array();
+		$results = [];
 
 		for($i=0; $i<=$sLen; $i++)
 		{
@@ -217,7 +217,7 @@ class BioPHP {
 	{
 		
 		$fastaLines = explode('>', $fastaStr);
-		$fastaArray = array();
+		$fastaArray = [];
 
 		foreach ($fastaLines as $fastaLine) 
 		{
