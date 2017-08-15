@@ -309,32 +309,59 @@ class BioPHP {
 		
 		// [XY] means "either X or Y" and {X} means "any amino acid except X."  N-glycosylation motif is written as N{P}[ST]{P}.		
 		$varyingSubSequence = str_split($varyingSubSequence);
+		$squareBrace = false;
+		$curlyBrace = false;
+		$returnedVaryingSubSequence = [];
 
+		$inc=0;
 		for ($i=0; $i < count($varyingSubSequence); $i++) { 
 			
-			if($varyingSubSequence[$i] == "["){
+			if($varyingSubSequence[$i] == "]"){
 
-			} elseif($varyingSubSequence[$i] == "]"){
+				$squareBrace = false;
 
-			} elseif($varyingSubSequence[$i] == "{"){
+			} elseif($varyingSubSequence[$i] == "[" || $squareBrace == true){
+
+				if($squareBrace == true){
+					$returnedVaryingSubSequence[$inc][] = $varyingSubSequence[$i];
+				}
+
+				$squareBrace = true;
+
+				continue;
 
 			} elseif($varyingSubSequence[$i] == "}"){
+				
+				$curlyBrace = false;
+
+			} elseif($varyingSubSequence[$i] == "{"  || $curlyBrace == true){
+
+				if($curlyBrace == true){
+					$returnedVaryingSubSequence[$inc][] = "!".$varyingSubSequence[$i];
+				}
+
+				$curlyBrace = true;
+
+				continue;
 
 			} else {
 
-				$varyingSubSequence[$i] = $varyingSubSequence[$i];
+				$returnedVaryingSubSequence[$inc] = $varyingSubSequence[$i];
 				
 			}
 
+			$inc++;
 		}
 
-		return $variedFormsArray;
+		return $returnedVaryingSubSequence;
 
 	}
 
 
 	public function findMotifProtein($varyingSubSequence,$proteinSequence)
 	{
+
+		$varyingSubSequences = $this->varyingFormsGeneration($varyingSubSequence);
 
 		// find the variations in subsequence
 
@@ -408,4 +435,8 @@ $BioPHP = new BioPHP();
 $uniprotFasta =  $BioPHP->getUniprotFastaByID("B5ZC00");
 $fastaArray = $BioPHP->readFasta($uniprotFasta);
 echo $BioPHP->calcMonoIsotopicMass($fastaArray[1]['sequence'])."\n";
+
+
+echo $BioPHP->findMotifProtein("LM[XY]{PR}","LMMGGNFR")."\n\n";
+
 ?>
