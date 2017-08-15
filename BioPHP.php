@@ -15,7 +15,7 @@ class BioPHP {
 	public $sequenceA;
 
 	public $sequenceB;
-	
+
 	public $codonToAminos = ["ATT" => "I", "ATC" => "I", "ATA" =>"I", "CTT" => "L", "CTC" => "L", "CTA" => "L", "CTG" => "L", "TTA" => "L", "TTG" => "L", "GTT" => "V", "GTC" => "V", "GTA" =>"V", "GTG" =>"V","TTT" => "F", "TTC" => "F","ATG" => "M","TGT" => "C", "TGC" => "C", "GCT" => "A", "GCC" => "A", "GCA" => "A", "GCG" => "A", "GGT" => "G", "GGC" => "G", "GGA" => "G", "GGG" => "G", "CCT" => "P", "CCC" => "P", "CCA" => "P", "CCG" => "P", "ACT" => "T", "ACC" => "T", "ACA" => "T", "ACG" => "T", "TCT" => "S", "TCC" => "S", "TCA" => "S", "TCG" => "S", "AGT" => "S", "AGC" => "S", "TAT" => "Y", "TAC" => "Y", "TGG" => "W", "CAA" => "Q", "CAG" => "Q", "AAT" => "N", "AAC" => "N", "CAT" => "H", "CAC" => "H", "GAA" => "E", "GAG" => "E", "GAT" => "D", "GAC" => "D", "AAA" => "K", "AAG" => "K", "CGT" => "R", "CGC" => "R", "CGA" => "R", "CGG" => "R", "AGA" => "R", "AGG" => "R", "TAA" => "*", "TAG" => "*", "TGA" => "*" ]; // * equals stop codon
 
 	public $monisotopicAminoMass = ["A" => 71.03711, "C" => 103.00919, "D" => 115.02694, "E" => 129.04259, "F" => 147.06841, "G" => 57.02146, "H" => 137.05891, "I" => 113.08406, "K" => 128.09496, "L" => 113.08406, "M" => 131.04049, "N" => 114.04293, "P" => 97.05276, "Q" => 128.05858, "R" => 156.10111, "S" => 87.03203, "T" => 101.04768, "V" => 99.06841, "W" => 186.07931, "Y" => 163.06333];
@@ -113,7 +113,7 @@ class BioPHP {
 
 				if($this->sequenceA[$i] != $this->sequenceB[$i]) {
 					$totalMutations++;
-				}				
+				}
 
 			} else {
 
@@ -121,7 +121,7 @@ class BioPHP {
 
 			}
 
-		
+
 		}
 
 		return $totalMutations;
@@ -136,12 +136,12 @@ class BioPHP {
 
 		$proteinSequence = "";
 
-		foreach ($sequenceCodons as $sequenceCodon) 
+		foreach ($sequenceCodons as $sequenceCodon)
 		{
-		  
+
 			if(isset($this->codonToAminos[$sequenceCodon])){
 
-				$proteinSequence .= $this->codonToAminos[$sequenceCodon]; 
+				$proteinSequence .= $this->codonToAminos[$sequenceCodon];
 
 			} else {
 
@@ -164,7 +164,7 @@ class BioPHP {
 
 		for($i=0; $i<=$sLen; $i++)
 		{
-			
+
 			if(substr($this->sequenceB, $i, $tLen) == $this->sequenceA){
 				$results[] = $i+1;
 			}
@@ -301,13 +301,32 @@ class BioPHP {
 
 	}
 
-
+	//create and array of all matchable amino acids at each position.
 	public function varyingFormsGeneration($varyingSubSequence)
 	{
 		
-		
-		// To allow for the presence of its varying forms, a protein motif is represented by a shorthand as follows: [XY] means "either X or Y" and {X} means "any amino acid except X." For example, the N-glycosylation motif is written as N{P}[ST]{P}.		
+		// [XY] means "either X or Y" and {X} means "any amino acid except X."  N-glycosylation motif is written as N{P}[ST]{P}.		
+		$varyingSubSequence = str_split($varyingSubSequence);
 
+		for ($i=0; $i < count($varyingSubSequence); $i++) { 
+			
+			if($varyingSubSequence[$i] == "["){
+
+			} elseif($varyingSubSequence[$i] == "]"){
+
+			} elseif($varyingSubSequence[$i] == "{"){
+
+			} elseif($varyingSubSequence[$i] == "}"){
+
+			} else {
+
+				$varyingSubSequence[$i] = $varyingSubSequence[$i];
+				
+			}
+
+		}
+
+		return $variedFormsArray;
 
 	}
 
