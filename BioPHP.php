@@ -100,11 +100,11 @@ class BioPHP {
 			$longestSequenceLength = strlen($this->sequenceA);
 
 		} else {
-			
+
 			$longestSequenceLength = strlen($this->sequenceB);
 
 		}
-		
+
 
 		for($i=0; $i < $longestSequenceLength; $i++)
 		{
@@ -179,8 +179,8 @@ class BioPHP {
 
 	public function getReadingFrames()
 	{
-		
-		
+
+
 		$frameOne = $this->sequenceA;
 		$frameTwo = substr($this->sequenceA, 1);
 		$frameThree = substr($this->sequenceA, 2);
@@ -193,18 +193,18 @@ class BioPHP {
 
 	public function calcMonoIsotopicMass($proteinSequence)
 	{
-		
+
 		$proteinLen = strlen($proteinSequence);
 		$mass = 0;
 
 		for($i=0; $i<=$proteinLen; $i++)
 		{
-			
+
 			if( isset( $this->monisotopicAminoMass[substr($proteinSequence, $i, 1)] ) ){
 				$mass = $mass + $this->monisotopicAminoMass[substr($proteinSequence, $i, 1)];
 			}
 
-		}		
+		}
 
 
 		return $mass;
@@ -215,11 +215,11 @@ class BioPHP {
 	//read fasta as a string and return an array.
 	public function readFasta($fastaStr)
 	{
-		
+
 		$fastaLines = explode('>', $fastaStr);
 		$fastaArray = [];
 
-		foreach ($fastaLines as $fastaLine) 
+		foreach ($fastaLines as $fastaLine)
 		{
 
 			$singleLines = preg_split('/$\R?^/m', $fastaLine);
@@ -228,13 +228,13 @@ class BioPHP {
 
 			for ($i=1;$i<count($singleLines);$i++) 
 			{
-			
+
 				$sequence .= str_replace(array("\r", "\n"), '',$singleLines[$i]);
-			
+
 			}
-			
+
 			$fastaArray[] = ["name" => $singleLines[0], "sequence" => $sequence];
-			
+
 		}
 
 		return $fastaArray;
@@ -245,11 +245,11 @@ class BioPHP {
 
 	public function mostLikelyCommonAncestor($sequencesArray)
 	{
-		
+
 		$countNucleotides = [];
 
 		foreach ($sequencesArray as $key => $value) {
-			
+
 			$sequence = str_split($value['sequence']);
 
 			for ($i=0; $i<count($sequence);$i++){
@@ -269,14 +269,14 @@ class BioPHP {
 					$countNucleotides[$i]["G"]++;
 				} elseif($sequence[$i] == "C"){
 					$countNucleotides[$i]["C"]++;
-				}				
+				}
 
 			}
 
 		}
 
 		$mostLikelyCommonAncestorSequence = "";
-		
+
 		for($i=0;$i<count($countNucleotides);$i++)
 		{
 
@@ -291,14 +291,14 @@ class BioPHP {
 
 	public function getUniprotFastaByID($uniprotID)
 	{
-		
-		
-		$ch = curl_init(); 
-		curl_setopt($ch, CURLOPT_URL, "http://www.uniprot.org/uniprot/".$uniprotID.".fasta"); 
+
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, "http://www.uniprot.org/uniprot/".$uniprotID.".fasta");
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-		$output = curl_exec($ch); 
-		curl_close($ch);  		
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$output = curl_exec($ch);
+		curl_close($ch);
 
 		return $output;
 
@@ -307,7 +307,7 @@ class BioPHP {
 	//create and array of all matchable amino acids at each position.
 	public function varyingFormsGeneration($varyingSubSequence)
 	{
-		
+
 		$varyingSubSequence = str_split($varyingSubSequence);
 		$squareBrace = false;
 		$curlyBrace = false;
@@ -316,7 +316,7 @@ class BioPHP {
 		$inc=0;
 
 		for ($i=0; $i < count($varyingSubSequence); $i++) { 
-			
+
 			if($varyingSubSequence[$i] == "]"){
 
 				$squareBrace = false;
@@ -334,7 +334,7 @@ class BioPHP {
 				continue;
 
 			} elseif($varyingSubSequence[$i] == "}"){
-				
+
 				$curlyBrace = false;
 
 			} elseif($varyingSubSequence[$i] == "{"  || $curlyBrace == true){
@@ -352,7 +352,7 @@ class BioPHP {
 			} else {
 
 				$returnedVaryingSubSequence[$inc] = $varyingSubSequence[$i];
-				
+
 			}
 
 			$inc++;
@@ -390,7 +390,7 @@ class BioPHP {
 
 				if(is_array($varyingSubSequences[$b])){
 
-					foreach ($varyingSubSequences[$b] as $singleValue) 					
+					foreach ($varyingSubSequences[$b] as $singleValue)
 					{
 
 						if($singleValue[0] == "!"){
@@ -407,7 +407,7 @@ class BioPHP {
 
 								$matches++;
 
-							} 
+							}
 
 						}
 
@@ -419,14 +419,14 @@ class BioPHP {
 
 						$matches++;
 
-					} 
+					}
 
 				}
 
 				if($matches == $tLen){
 
 					$results[] = ($i+1);
-				
+
 				}
 
 			}
