@@ -95,3 +95,25 @@ echo $BioPHP->calcMonoIsotopicMass($fastaArray[1]['sequence'])."\n";
 
 //prints 55319.0636
 ```
+
+
+### Find Protein Motif using a variable "shorthand" motif search
+```php
+$BioPHP = new BioPHP();
+$results = $BioPHP->findMotifProtein("N{P}[ST]{P}","B5ZC00");
+print_r($results);
+
+/*
+* returns array containing...
+Array
+(
+    [0] => 85
+    [1] => 118
+    [2] => 142
+    [3] => 306
+    [4] => 395
+)
+*/
+
+//Notes: The second parameter expects a protein access ID string used to lookup the full sequence via UniProt.
+```

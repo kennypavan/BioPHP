@@ -295,6 +295,7 @@ class BioPHP {
 		
 		$ch = curl_init(); 
 		curl_setopt($ch, CURLOPT_URL, "http://www.uniprot.org/uniprot/".$uniprotID.".fasta"); 
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 		$output = curl_exec($ch); 
 		curl_close($ch);  		
@@ -307,13 +308,13 @@ class BioPHP {
 	public function varyingFormsGeneration($varyingSubSequence)
 	{
 		
-		// [XY] means "either X or Y" and {X} means "any amino acid except X."  N-glycosylation motif is written as N{P}[ST]{P}.		
 		$varyingSubSequence = str_split($varyingSubSequence);
 		$squareBrace = false;
 		$curlyBrace = false;
 		$returnedVaryingSubSequence = [];
 
 		$inc=0;
+
 		for ($i=0; $i < count($varyingSubSequence); $i++) { 
 			
 			if($varyingSubSequence[$i] == "]"){
@@ -323,7 +324,9 @@ class BioPHP {
 			} elseif($varyingSubSequence[$i] == "[" || $squareBrace == true){
 
 				if($squareBrace == true){
+
 					$returnedVaryingSubSequence[$inc][] = $varyingSubSequence[$i];
+
 				}
 
 				$squareBrace = true;
@@ -337,7 +340,9 @@ class BioPHP {
 			} elseif($varyingSubSequence[$i] == "{"  || $curlyBrace == true){
 
 				if($curlyBrace == true){
+
 					$returnedVaryingSubSequence[$inc][] = "!".$varyingSubSequence[$i];
+
 				}
 
 				$curlyBrace = true;
@@ -358,23 +363,86 @@ class BioPHP {
 	}
 
 
-	public function findMotifProtein($varyingSubSequence,$proteinSequence)
+	public function findMotifProtein($varyingSubSequence,$proteinID)
 	{
 
+		// find the variations in subsequence
 		$varyingSubSequences = $this->varyingFormsGeneration($varyingSubSequence);
 
-		// find the variations in subsequence
-
 		// get sequence from uniprot
+		$uniprotFasta =  $this->getUniprotFastaByID($proteinID);
+		$fastaArray = $this->readFasta($uniprotFasta);
+		$sequence = $fastaArray[1]['sequence'];
+
+		// get sequence lengths and declare results
+		$tLen = count($varyingSubSequences);
+		$sLen = strlen($sequence);
+		$results = [];
 
 		// search for motifs in the sequence
+		for($i=0; $i<=($sLen-$tLen); $i++)
+		{
+
+			$matches = 0;
+
+			for($b=0; $b<$tLen; $b++)
+			{
+
+				if(is_array($varyingSubSequences[$b])){
+
+					foreach ($varyingSubSequences[$b] as $singleValue) 					
+					{
+
+						if($singleValue[0] == "!"){
+
+							if($singleValue[1] != $sequence[$i+$b]){
+
+								$matches++;
+
+							}
+
+						} else {
+
+							if($singleValue == $sequence[$i+$b]){
+
+								$matches++;
+
+							} 
+
+						}
+
+					}
+
+				} else {
+
+					if($varyingSubSequences[$b] == $sequence[$i+$b]){
+
+						$matches++;
+
+					} 
+
+				}
+
+				if($matches == $tLen){
+
+					$results[] = ($i+1);
+				
+				}
+
+			}
+
+		}
+
+		return $results;
 
 	}
-
 
 }
 
 
+//--------- Sample Usage Below ------------//
+
+/*
 //Sample Usage - Find Reverse Complement
 $BioPHP = new BioPHP('ATGAAAGCATC');
 $BioPHP->reverseSequence();
@@ -430,13 +498,17 @@ $fastaArray = $BioPHP->readFasta($fasta);
 echo $BioPHP->mostLikelyCommonAncestor($fastaArray)."\n";
 
 
-//Sample Usage - Get a fasta result from Uniprot amd calculate its Isotpoic Mass
+//Sample Usage - Get a fasta result from Uniprot and calculate its Isotpoic Mass
 $BioPHP = new BioPHP();
 $uniprotFasta =  $BioPHP->getUniprotFastaByID("B5ZC00");
 $fastaArray = $BioPHP->readFasta($uniprotFasta);
-echo $BioPHP->calcMonoIsotopicMass($fastaArray[1]['sequence'])."\n";
+echo $BioPHP->calcMonoIsotopicMass($fastaArray[1]['sequence'])."\n\n";
 
 
-echo $BioPHP->findMotifProtein("LM[XY]{PR}","LMMGGNFR")."\n\n";
-
+//Sample Usage - Get a protein fasta result from Uniprot and find protein motif with varying sequence search.
+// Varying sequence - [XY] means "either X or Y" and {X} means "any amino acid except X."  N-glycosylation motif is written as N{P}[ST]{P}.		
+$BioPHP = new BioPHP();
+$results = $BioPHP->findMotifProtein("N{P}[ST]{P}","B5ZC00");
+print_r($results);
+*/
 ?>
