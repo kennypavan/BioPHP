@@ -445,7 +445,8 @@ class BioPHP {
 
 		$motifsPossiblities = [];
 		$sequenceCount = count($sequences);
-			
+		$start = strtotime("now");
+
 		for ($j=strlen($sequences[0]['sequence']);$j>0;$j--) 
 		{
 
@@ -458,6 +459,7 @@ class BioPHP {
 
 		}
 
+		
 		$motifsPossiblities = array_unique($motifsPossiblities);
 
 		usort($motifsPossiblities, function($a, $b) {
@@ -478,10 +480,16 @@ class BioPHP {
 					
 					$motifsShared++;
 
+				} else {
+
+					continue 2;
+
 				}
 
 				if($motifsShared == $sequenceCount){
 
+					$end = strtotime("now");
+					echo "Script took ".($end-$start)." seconds to run\n\n";
 					return $motifsPossiblity;
 
 				}
