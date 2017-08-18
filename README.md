@@ -119,11 +119,12 @@ Array
 ```
 
 
-### Finding shared Motif
-Note: This task can be very CPU intensive. Using PHP 7, this method benchmarked faster than Python! Runtime results were about 1 second with
+### Finding a shared motif
+This task can be very CPU intensive. Using PHP 7, this method benchmarked faster than Python! Runtime results were about 1 second with
 a collection of 100 DNA strings of length 1 kbp each.
 ```php
-$fasta=">Sequence 1
+$fasta="
+>Sequence 1
 GATTACA
 >Sequence 2
 TAGACCA
