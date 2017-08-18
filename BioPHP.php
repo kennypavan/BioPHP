@@ -445,29 +445,20 @@ class BioPHP {
 
 		$motifsPossiblities = [];
 		$sequenceCount = count($sequences);
-		$start = strtotime("now");
 
+		$inc=1;
 		for ($j=strlen($sequences[0]['sequence']);$j>0;$j--) 
 		{
 
-			for ($i=0;$i<strlen($sequences[0]['sequence']); $i++) 
+			for ($i=0;$i<$inc; $i++) 
 			{ 
 
 				$motifsPossiblities[] = substr($sequences[0]['sequence'], $i, $j);
 
 			}
 
+			$inc++;
 		}
-
-		
-		$motifsPossiblities = array_unique($motifsPossiblities);
-
-		usort($motifsPossiblities, function($a, $b) {
-
-			return strlen($b) >= strlen($a);
-
-		});
-
 
 		foreach ($motifsPossiblities as $motifsPossiblity){
 
@@ -488,8 +479,6 @@ class BioPHP {
 
 				if($motifsShared == $sequenceCount){
 
-					$end = strtotime("now");
-					echo "Script took ".($end-$start)." seconds to run\n\n";
 					return $motifsPossiblity;
 
 				}
@@ -570,22 +559,23 @@ echo $BioPHP->calcMonoIsotopicMass($fastaArray[1]['sequence'])."\n\n";
 
 
 //Sample Usage - Get a protein fasta result from Uniprot and find protein motif with varying sequence search.
-// Varying sequence - [XY] means "either X or Y" and {X} means "any amino acid except X."  N-glycosylation motif is written as N{P}[ST]{P}.		
+// Varying sequence - [XY] means "either X or Y" and {X} means "any amino acid except X."  N-glycosylation motif is written as N{P}[ST]{P}.	
 $BioPHP = new BioPHP();
 $results = $BioPHP->findMotifProtein("N{P}[ST]{P}","B5ZC00");
 print_r($results);
-*/
 
 
-$fasta=">Rosalind_1
+//Sample Usage - Finding a Shared Motif.
+$fasta=">Sequence 1
 GATTACA
->Rosalind_2
+>Sequence 2
 TAGACCA
->Rosalind_3
+>Sequence 3
 ATACA";
 
 $BioPHP = new BioPHP();
 $fastaArray = $BioPHP->readFasta($fasta);
 $result = $BioPHP->findLongestSharedMotif($fastaArray);
 echo $result."\n";
+*/
 ?>

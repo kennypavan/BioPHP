@@ -117,3 +117,23 @@ Array
 
 //Notes: The second parameter expects a protein access ID string used to lookup the full sequence via UniProt.
 ```
+
+
+### Finding shared Motif
+Note: This task can be very CPU intensive. Using PHP 7, this method benchmarked faster than Python! Runtime results were about 1 second with
+a collection of 100 DNA strings of length 1 kbp each.
+```php
+$fasta=">Sequence 1
+GATTACA
+>Sequence 2
+TAGACCA
+>Sequence 3
+ATACA";
+
+$BioPHP = new BioPHP();
+$fastaArray = $BioPHP->readFasta($fasta);
+$result = $BioPHP->findLongestSharedMotif($fastaArray);
+echo $result."\n";
+//prints TA
+
+```
