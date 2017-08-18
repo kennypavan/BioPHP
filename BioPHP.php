@@ -1,4 +1,4 @@
-<?php
+<?php set_time_limit(0);
 
 /**
  * BioPHP
@@ -232,8 +232,10 @@ class BioPHP {
 				$sequence .= str_replace(array("\r", "\n"), '',$singleLines[$i]);
 
 			}
-
-			$fastaArray[] = ["name" => $singleLines[0], "sequence" => $sequence];
+			
+			if(strlen($sequence)>0){
+				$fastaArray[] = ["name" => $singleLines[0], "sequence" => $sequence];
+			}
 
 		}
 
@@ -437,6 +439,60 @@ class BioPHP {
 
 	}
 
+
+	public function findLongestSharedMotif($sequences)
+	{
+
+		$motifsPossiblities = [];
+		$sequenceCount = count($sequences);
+			
+		for ($j=strlen($sequences[0]['sequence']);$j>0;$j--) 
+		{
+
+			for ($i=0;$i<strlen($sequences[0]['sequence']); $i++) 
+			{ 
+
+				$motifsPossiblities[] = substr($sequences[0]['sequence'], $i, $j);
+
+			}
+
+		}
+
+		$motifsPossiblities = array_unique($motifsPossiblities);
+
+		usort($motifsPossiblities, function($a, $b) {
+
+			return strlen($b) >= strlen($a);
+
+		});
+
+
+		foreach ($motifsPossiblities as $motifsPossiblity){
+
+			$motifsShared = 0;
+
+			foreach ($sequences as $sequenceb) 
+			{
+
+				if(strpos($sequenceb['sequence'], $motifsPossiblity) !== false){
+					
+					$motifsShared++;
+
+				}
+
+				if($motifsShared == $sequenceCount){
+
+					return $motifsPossiblity;
+
+				}
+
+			}
+
+		}
+
+	}
+
+
 }
 
 
@@ -511,4 +567,17 @@ $BioPHP = new BioPHP();
 $results = $BioPHP->findMotifProtein("N{P}[ST]{P}","B5ZC00");
 print_r($results);
 */
+
+
+$fasta=">Rosalind_1
+GATTACA
+>Rosalind_2
+TAGACCA
+>Rosalind_3
+ATACA";
+
+$BioPHP = new BioPHP();
+$fastaArray = $BioPHP->readFasta($fasta);
+$result = $BioPHP->findLongestSharedMotif($fastaArray);
+echo $result."\n";
 ?>
