@@ -12,96 +12,87 @@
 class BioPHP {
 
 
-	public $sequenceA;
-
-	public $sequenceB;
-
 	public $codonToAminos = ["ATT" => "I", "ATC" => "I", "ATA" =>"I", "CTT" => "L", "CTC" => "L", "CTA" => "L", "CTG" => "L", "TTA" => "L", "TTG" => "L", "GTT" => "V", "GTC" => "V", "GTA" =>"V", "GTG" =>"V","TTT" => "F", "TTC" => "F","ATG" => "M","TGT" => "C", "TGC" => "C", "GCT" => "A", "GCC" => "A", "GCA" => "A", "GCG" => "A", "GGT" => "G", "GGC" => "G", "GGA" => "G", "GGG" => "G", "CCT" => "P", "CCC" => "P", "CCA" => "P", "CCG" => "P", "ACT" => "T", "ACC" => "T", "ACA" => "T", "ACG" => "T", "TCT" => "S", "TCC" => "S", "TCA" => "S", "TCG" => "S", "AGT" => "S", "AGC" => "S", "TAT" => "Y", "TAC" => "Y", "TGG" => "W", "CAA" => "Q", "CAG" => "Q", "AAT" => "N", "AAC" => "N", "CAT" => "H", "CAC" => "H", "GAA" => "E", "GAG" => "E", "GAT" => "D", "GAC" => "D", "AAA" => "K", "AAG" => "K", "CGT" => "R", "CGC" => "R", "CGA" => "R", "CGG" => "R", "AGA" => "R", "AGG" => "R", "TAA" => "*", "TAG" => "*", "TGA" => "*" ]; // * equals stop codon
 
 	public $monisotopicAminoMass = ["A" => 71.03711, "C" => 103.00919, "D" => 115.02694, "E" => 129.04259, "F" => 147.06841, "G" => 57.02146, "H" => 137.05891, "I" => 113.08406, "K" => 128.09496, "L" => 113.08406, "M" => 131.04049, "N" => 114.04293, "P" => 97.05276, "Q" => 128.05858, "R" => 156.10111, "S" => 87.03203, "T" => 101.04768, "V" => 99.06841, "W" => 186.07931, "Y" => 163.06333];
 
 
-	public function __construct($sequenceA=false, $sequenceB=false)
-	{
-		$this->sequenceA = $sequenceA;
-		$this->sequenceB = $sequenceB;
-		$this->normalizeSequence();
-	}
-
-
-	public function normalizeSequence()
+	public function normalizeSequence($sequence)
 	{
 
- 		$this->sequenceA = strtoupper($this->sequenceA);
- 		$this->sequenceB = strtoupper($this->sequenceB);
-		return $this->sequenceA;
+		return strtoupper($sequence);
 
 	}
 
 
-	public function reverseSequence()
+	public function reverseSequence($sequence)
  	{
 
- 		$this->sequenceA = strrev($this->sequenceA);
-		return $this->sequenceA;
+ 		$sequence = $this->normalizeSequence($sequence);
+		return strrev($sequence);
 
 	}
 
 
-	public function complementDnaSequence()
+	public function complementDnaSequence($sequence)
 	{
-
-		$this->sequenceA = str_replace("A", "t", $this->sequenceA);
-		$this->sequenceA = str_replace("T", "a", $this->sequenceA);
-		$this->sequenceA = str_replace("G", "c", $this->sequenceA);
-		$this->sequenceA = str_replace("C", "g", $this->sequenceA);
-		$this->normalizeSequence();
-		return $this->sequenceA;
+ 		
+ 		$sequence = $this->normalizeSequence($sequence);
+		$sequence = str_replace("A", "t", $sequence);
+		$sequence = str_replace("T", "a", $sequence);
+		$sequence = str_replace("G", "c", $sequence);
+		$sequence = str_replace("C", "g", $sequence);
+		$sequence = $this->normalizeSequence($sequence);
+		return $sequence;
 
 	}
 
 
-	public function countNucleotides()
+	public function countNucleotides($sequence)
 	{
 
-		return strlen($this->sequenceA);
+		return strlen($sequence);
 
 	}
 
 
-	public function gcContent($precision = 2)
+	public function gcContent($sequence, $precision = 2)
 	{
 
+ 		$sequence = $this->normalizeSequence($sequence);
+		$g = substr_count($sequence, 'G');
+		$c = substr_count($sequence, 'C');
 
-		$g = substr_count($this->sequenceA, 'G');
-		$c = substr_count($this->sequenceA, 'C');
-
-		return number_format( ( ($g+$c) / strlen($this->sequenceA) ) * 100 , $precision);
+		return number_format( ( ($g+$c) / strlen($sequence) ) * 100 , $precision);
 
 	}
 
 
-	public function convertRnaToDna()
+	public function convertRnaToDna($sequence)
 	{
 
-		$this->sequenceA = str_replace("U","T",$this->sequenceA);
-		return $this->sequenceA;
+ 		$sequence = $this->normalizeSequence($sequence);
+		$sequence = str_replace("U","T",$sequence);
+		return $sequence;
 
 	}
 
 
-	public function countPointMutations()
+	public function countPointMutations($sequenceA, $sequenceB)
 	{
+
+ 		$sequenceA = $this->normalizeSequence($sequenceA);
+ 		$sequenceB = $this->normalizeSequence($sequenceB);
 
 		$totalMutations = 0;
 
-		if(strlen($this->sequenceA) >= strlen($this->sequenceB)){
+		if(strlen($sequenceA) >= strlen($sequenceB)){
 
-			$longestSequenceLength = strlen($this->sequenceA);
+			$longestSequenceLength = strlen($sequenceA);
 
 		} else {
 
-			$longestSequenceLength = strlen($this->sequenceB);
+			$longestSequenceLength = strlen($sequenceB);
 
 		}
 
@@ -109,9 +100,9 @@ class BioPHP {
 		for($i=0; $i < $longestSequenceLength; $i++)
 		{
 
-			if (isset($this->sequenceA[$i]) && isset($this->sequenceB[$i]) ) {
+			if (isset($sequenceA[$i]) && isset($sequenceB[$i]) ) {
 
-				if($this->sequenceA[$i] != $this->sequenceB[$i]) {
+				if($sequenceA[$i] != $sequenceB[$i]) {
 					$totalMutations++;
 				}
 
@@ -129,9 +120,10 @@ class BioPHP {
 	}
 
 
-	public function translateDna($offset = 0){
+	public function translateDna($sequence, $offset = 0){
 
-		$sequence = substr($this->sequenceA, $offset);  //offset reading frame for future use.
+		$sequence = $this->normalizeSequence($sequence);
+		$sequence = substr($sequence, $offset);  //offset reading frame for future use.
 		$sequenceCodons = str_split($sequence, 3);
 
 		$proteinSequence = "";
@@ -156,17 +148,19 @@ class BioPHP {
 
 
 	//sequence A is a substring of sequence B
-	public function findMotifDNA()
+	public function findMotifDNA($sequenceA, $sequenceB)
 	{
 
-		$tLen = strlen($this->sequenceA);
-		$sLen = strlen($this->sequenceB);
+ 		$sequenceA = $this->normalizeSequence($sequenceA);
+ 		$sequenceB = $this->normalizeSequence($sequenceB);
+		$tLen = strlen($sequenceA);
+		$sLen = strlen($sequenceB);
 		$results = [];
 
 		for($i=0; $i<=$sLen; $i++)
 		{
 
-			if(substr($this->sequenceB, $i, $tLen) == $this->sequenceA){
+			if(substr($sequenceB, $i, $tLen) == $sequenceA){
 				$results[] = $i+1;
 			}
 
@@ -177,13 +171,13 @@ class BioPHP {
 	}
 
 
-	public function getReadingFrames()
+	public function getReadingFrames($sequence)
 	{
 
-
-		$frameOne = $this->sequenceA;
-		$frameTwo = substr($this->sequenceA, 1);
-		$frameThree = substr($this->sequenceA, 2);
+ 		$sequence = $this->normalizeSequence($sequence);
+		$frameOne = $sequence;
+		$frameTwo = substr($sequence, 1);
+		$frameThree = substr($sequence, 2);
 		$readingFrames = [$frameOne,$frameTwo,$frameThree];
 
 		return $readingFrames;
@@ -194,6 +188,7 @@ class BioPHP {
 	public function calcMonoIsotopicMass($proteinSequence)
 	{
 
+ 		$proteinSequence = $this->normalizeSequence($proteinSequence);
 		$proteinLen = strlen($proteinSequence);
 		$mass = 0;
 
@@ -374,7 +369,7 @@ class BioPHP {
 		// get sequence from uniprot
 		$uniprotFasta =  $this->getUniprotFastaByID($proteinID);
 		$fastaArray = $this->readFasta($uniprotFasta);
-		$sequence = $fastaArray[1]['sequence'];
+		$sequence = $fastaArray[0]['sequence'];
 
 		// get sequence lengths and declare results
 		$tLen = count($varyingSubSequences);
@@ -497,45 +492,44 @@ class BioPHP {
 
 /*
 //Sample Usage - Find Reverse Complement
-$BioPHP = new BioPHP('ATGAAAGCATC');
-$BioPHP->reverseSequence();
-$BioPHP->complementDnaSequence();
-echo $BioPHP->sequenceA."\n";
+$BioPHP = new BioPHP();
+$result = $BioPHP->reverseSequence('ATGAAAGCATC');
+$result = $BioPHP->complementDnaSequence($result);
+echo $result."\n";
 
 //Sample Usage - Get Nucleotide Count
-$BioPHP = new BioPHP('ATGAAAGCATC');
-echo $BioPHP->countNucleotides()."\n";
+$BioPHP = new BioPHP();
+echo $BioPHP->countNucleotides('ATGAAAGCATC')."\n";
 
 //Sample Usage - Get GC Content Percentage
-$BioPHP = new BioPHP('ATGAAAGCATC');
-echo $BioPHP->gcContent(4)."\n";
+$BioPHP = new BioPHP();
+echo $BioPHP->gcContent('ATGAAAGCATC', 4)."\n";
 
 //Sample Usage - Count point Mutations between two sequences
-$BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCA','CTGATGATGCGAGGGAATATCG');
-echo $BioPHP->countPointMutations()."\n";
+$BioPHP = new BioPHP();
+echo $BioPHP->countPointMutations('CTGATGATGGGAGGAAATTTCA','CTGATGATGCGAGGGAATATCG')."\n";
 
 //Sample Usage - Convert RNA to DNA
-$BioPHP = new BioPHP('ACGCGAUUGCGAUCGAUGCACGCU');
-echo $BioPHP->convertRnaToDna()."\n";
+$BioPHP = new BioPHP();
+echo $BioPHP->convertRnaToDna('ACGCGAUUGCGAUCGAUGCACGCU')."\n";
 
 //Sample Usage - Translate sequence to amino acid
-$BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCAGA');
-echo $BioPHP->translateDna()."\n";
+$BioPHP = new BioPHP();
+echo $BioPHP->translateDna('CTGATGATGGGAGGAAATTTCAGA')."\n";
 
 //Sample Usage - Finding a Motif in DNA
-$BioPHP = new BioPHP('ATAT', 'GTATATCTATATGGCCATAT');
-echo $BioPHP->findMotifDNA()."\n";
+$BioPHP = new BioPHP();
+echo $BioPHP->findMotifDNA('ATAT', 'GTATATCTATATGGCCATAT')."\n";
 
 //Sample Usage - Get all reading frames (in one direction)
-$BioPHP = new BioPHP('GTATATCTATATGGCCATAT');
-print_r( $BioPHP->getReadingFrames() );
+$BioPHP = new BioPHP();
+print_r( $BioPHP->getReadingFrames('GTATATCTATATGGCCATAT') );
 echo "\n";
 
-//Sample Usage - Calculate monoisotopic mass
-$BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCAGA');
-$proteinSequence = $BioPHP->translateDna()."\n";
+//Sample Usage - Calculate monoisotopic mass of DNA sequence
+$BioPHP = new BioPHP();
+$proteinSequence = $BioPHP->translateDna('CTGATGATGGGAGGAAATTTCAGA')."\n";
 echo $BioPHP->calcMonoIsotopicMass($proteinSequence)."\n\n";
-
 
 //Sample Usage - Find most common likely ancestor
 $fasta = "
@@ -550,20 +544,17 @@ $BioPHP = new BioPHP();
 $fastaArray = $BioPHP->readFasta($fasta);
 echo $BioPHP->mostLikelyCommonAncestor($fastaArray)."\n";
 
-
 //Sample Usage - Get a fasta result from Uniprot and calculate its Isotpoic Mass
 $BioPHP = new BioPHP();
 $uniprotFasta =  $BioPHP->getUniprotFastaByID("B5ZC00");
 $fastaArray = $BioPHP->readFasta($uniprotFasta);
-echo $BioPHP->calcMonoIsotopicMass($fastaArray[1]['sequence'])."\n\n";
-
+echo $BioPHP->calcMonoIsotopicMass($fastaArray[0]['sequence'])."\n\n";
 
 //Sample Usage - Get a protein fasta result from Uniprot and find protein motif with varying sequence search.
 // Varying sequence - [XY] means "either X or Y" and {X} means "any amino acid except X."  N-glycosylation motif is written as N{P}[ST]{P}.	
 $BioPHP = new BioPHP();
 $results = $BioPHP->findMotifProtein("N{P}[ST]{P}","B5ZC00");
 print_r($results);
-
 
 //Sample Usage - Finding a Shared Motif.
 $fasta=">Sequence 1
@@ -577,5 +568,6 @@ $BioPHP = new BioPHP();
 $fastaArray = $BioPHP->readFasta($fasta);
 $result = $BioPHP->findLongestSharedMotif($fastaArray);
 echo $result."\n";
+
 */
 ?>

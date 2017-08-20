@@ -1,57 +1,56 @@
 # BioPHP - PHP Bioinformatics class
-BioPHP is an easy to use, open source project. BioPHP implements a selection of simple tools for manipulating genomic data. We're not doing any heavy lifting here (this is PHP). This class is built for basic RNA, DNA, and Protein manipulation. 
+BioPHP is an easy to use open source project. BioPHP implements a selection of simple tools for manipulating genomic data. PHP 7 has benchmarked much faster than Python, this class aims to build tools for basic RNA, DNA, and Protein manipulation. With future plans include creating an experimental de novo assembly tool, and online portal for usage. 
 
 ## Simple Usage:
 
 ### Find Reverse Complement
 ```php
-$BioPHP = new BioPHP('ATGAAA');
-$BioPHP->reverseSequence(); //reverse sequence
-$BioPHP->complementDnaSequence(); //get the reversed complement
-echo $BioPHP->sequenceA;
+$BioPHP = new BioPHP();
+$result = $BioPHP->reverseSequence('ATGAAAGCATC');
+$result = $BioPHP->complementDnaSequence($result);
 //prints TTTCAT
 ```
 
 ### Calculate GC Content
 ```php
-$BioPHP = new BioPHP('ATGAAAGCATC');
-echo $BioPHP->gcContent();
+$BioPHP = new BioPHP();
+echo $BioPHP->gcContent('ATGAAAGCATC', 4)."\n";
 //prints 36.3636
 ```
 
 ### Count Point Mutations Between Two Sequences
 ```php
-$BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCA','CTGATGATGCGAGGGAATATCG');
-echo $BioPHP->countPointMutations();
+$BioPHP = new BioPHP();
+echo $BioPHP->countPointMutations('CTGATGATGGGAGGAAATTTCA','CTGATGATGCGAGGGAATATCG')."\n";
 //prints 4
 ```
 
 ### Translate DNA Sequence to Amino Acid Sequence
 ```php
-$BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCAGA');
-echo $BioPHP->translateDna();
+$BioPHP = new BioPHP();
+echo $BioPHP->translateDna('CTGATGATGGGAGGAAATTTCAGA')."\n";
 //prints LMMGGNFR
 ```
 
 ### Calculate Monoisotopic Mass
 ```php
-$BioPHP = new BioPHP('CTGATGATGGGAGGAAATTTCAGA');
-$proteinSequence = $BioPHP->translateDna()."\n"; //translate sequence
-echo $BioPHP->calcMonoIsotopicMass($proteinSequence)."\n"; //calculate mass
+$BioPHP = new BioPHP();
+$proteinSequence = $BioPHP->translateDna('CTGATGATGGGAGGAAATTTCAGA')."\n";
+echo $BioPHP->calcMonoIsotopicMass($proteinSequence)."\n\n";
 //prints 906.42041
 ```
 
 ### Finding a Motif in DNA
 ```php
-$BioPHP = new BioPHP('ATAT', 'GTATATCTATATGGCCATAT');
-echo $BioPHP->findMotifDNA();
+$BioPHP = new BioPHP();
+echo $BioPHP->findMotifDNA('ATAT', 'GTATATCTATATGGCCATAT')."\n";
 //prints 3 9 17
 ```
 
 ### Get Reading Frames
 ```php
-$BioPHP = new BioPHP('GTATATCTATATGGCCATAT');
-print_r( $BioPHP->getReadingFrames() );
+$BioPHP = new BioPHP();
+print_r( $BioPHP->getReadingFrames('GTATATCTATATGGCCATAT') );
 
 /*
 * returns array containing...
@@ -91,7 +90,7 @@ echo $BioPHP->mostLikelyCommonAncestor($fastaArray)."\n";
 $BioPHP = new BioPHP();
 $uniprotFasta =  $BioPHP->getUniprotFastaByID("B5ZC00"); //returns the result from Uniprot as a string
 $fastaArray = $BioPHP->readFasta($uniprotFasta); //parses the response
-echo $BioPHP->calcMonoIsotopicMass($fastaArray[1]['sequence'])."\n";
+echo $BioPHP->calcMonoIsotopicMass($fastaArray[0]['sequence'])."\n";
 
 //prints 55319.0636
 ```
