@@ -1,5 +1,5 @@
 # BioPHP - PHP Bioinformatics class
-BioPHP is an easy to use open source project. BioPHP implements a selection of simple tools for manipulating genomic data. PHP 7 has benchmarked much faster than Python, this class aims to build tools for basic RNA, DNA, Protein manipulation. Future plans include creating an experimental de novo assembly tool, and online project portal. 
+BioPHP is an easy to use open source project. BioPHP implements a selection of simple tools for manipulating genomic data. PHP 7 has benchmarked much faster than Python, this class aims to build tools for basic RNA, DNA, and Protein manipulation. Future plans include creating an experimental de novo assembly tool, and online project portal. 
 
 ## Simple Usage:
 
