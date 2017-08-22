@@ -1,5 +1,4 @@
-<?php set_time_limit(0);
-
+<?php
 /**
  * BioPHP
  *
@@ -36,7 +35,7 @@ class BioPHP {
 
 	public function complementDnaSequence($sequence)
 	{
- 		
+
  		$sequence = $this->normalizeSequence($sequence);
 		$sequence = str_replace("A", "t", $sequence);
 		$sequence = str_replace("T", "a", $sequence);
@@ -227,7 +226,7 @@ class BioPHP {
 				$sequence .= str_replace(array("\r", "\n"), '',$singleLines[$i]);
 
 			}
-			
+
 			if(strlen($sequence)>0){
 				$fastaArray[] = ["name" => $singleLines[0], "sequence" => $sequence];
 			}
@@ -463,7 +462,7 @@ class BioPHP {
 			{
 
 				if(strpos($sequenceb['sequence'], $motifsPossiblity) !== false){
-					
+
 					$motifsShared++;
 
 				} else {
