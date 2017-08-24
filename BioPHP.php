@@ -76,6 +76,15 @@ class BioPHP {
 
 	}
 
+	public function convertDnaToRna($sequence)
+	{
+
+ 		$sequence = $this->normalizeSequence($sequence);
+		$sequence = str_replace("T","U",$sequence);
+		return $sequence;
+
+	}
+
 
 	public function countPointMutations($sequenceA, $sequenceB)
 	{
@@ -569,4 +578,3 @@ $result = $BioPHP->findLongestSharedMotif($fastaArray);
 echo $result."\n";
 
 */
-?>
