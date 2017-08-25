@@ -1,4 +1,6 @@
-<?php
+<?php 
+namespace kap;
+
 /**
  * BioPHP
  *
