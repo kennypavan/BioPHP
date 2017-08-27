@@ -5,7 +5,7 @@ BioPHP is an easy to use open source project. BioPHP implements a selection of s
 
 ### Find Reverse Complement
 ```php
-$BioPHP = new BioPHP();
+$BioPHP = new \kap\BioPHP();
 $result = $BioPHP->reverseSequence('ATGAAAGCATC');
 $result = $BioPHP->complementDnaSequence($result);
 //prints TTTCAT
@@ -13,28 +13,28 @@ $result = $BioPHP->complementDnaSequence($result);
 
 ### Calculate GC Content
 ```php
-$BioPHP = new BioPHP();
+$BioPHP = new \kap\BioPHP();
 echo $BioPHP->gcContent('ATGAAAGCATC', 4)."\n";
 //prints 36.3636
 ```
 
 ### Count Point Mutations Between Two Sequences
 ```php
-$BioPHP = new BioPHP();
+$BioPHP = new \kap\BioPHP();
 echo $BioPHP->countPointMutations('CTGATGATGGGAGGAAATTTCA','CTGATGATGCGAGGGAATATCG')."\n";
 //prints 4
 ```
 
 ### Translate DNA Sequence to Amino Acid Sequence
 ```php
-$BioPHP = new BioPHP();
+$BioPHP = new \kap\BioPHP();
 echo $BioPHP->translateDna('CTGATGATGGGAGGAAATTTCAGA')."\n";
 //prints LMMGGNFR
 ```
 
 ### Calculate Monoisotopic Mass
 ```php
-$BioPHP = new BioPHP();
+$BioPHP = new \kap\BioPHP();
 $proteinSequence = $BioPHP->translateDna('CTGATGATGGGAGGAAATTTCAGA')."\n";
 echo $BioPHP->calcMonoIsotopicMass($proteinSequence)."\n\n";
 //prints 906.42041
@@ -42,14 +42,14 @@ echo $BioPHP->calcMonoIsotopicMass($proteinSequence)."\n\n";
 
 ### Finding a Motif in DNA
 ```php
-$BioPHP = new BioPHP();
+$BioPHP = new \kap\BioPHP();
 echo $BioPHP->findMotifDNA('ATAT', 'GTATATCTATATGGCCATAT')."\n";
 //prints 3 9 17
 ```
 
 ### Get Reading Frames
 ```php
-$BioPHP = new BioPHP();
+$BioPHP = new \kap\BioPHP();
 print_r( $BioPHP->getReadingFrames('GTATATCTATATGGCCATAT') );
 
 /*
@@ -77,7 +77,7 @@ GGGCAACT
 ATGGATCT
 ";
 
-$BioPHP = new BioPHP();
+$BioPHP = new \kap\BioPHP();
 $fastaArray = $BioPHP->readFasta($fastaSequence); //read and parse the sequences
 echo $BioPHP->mostLikelyCommonAncestor($fastaArray)."\n";
 
@@ -87,7 +87,7 @@ echo $BioPHP->mostLikelyCommonAncestor($fastaArray)."\n";
 
 ### Get a fasta result from Uniprot and calculate isotpoic mass
 ```php
-$BioPHP = new BioPHP();
+$BioPHP = new \kap\BioPHP();
 $uniprotFasta =  $BioPHP->getUniprotFastaByID("B5ZC00"); //returns the result from Uniprot as a string
 $fastaArray = $BioPHP->readFasta($uniprotFasta); //parses the response
 echo $BioPHP->calcMonoIsotopicMass($fastaArray[0]['sequence'])."\n";
@@ -98,7 +98,7 @@ echo $BioPHP->calcMonoIsotopicMass($fastaArray[0]['sequence'])."\n";
 
 ### Find Protein Motif using a variable "shorthand" motif search
 ```php
-$BioPHP = new BioPHP();
+$BioPHP = new \kap\BioPHP();
 $results = $BioPHP->findMotifProtein("N{P}[ST]{P}","B5ZC00");
 print_r($results);
 
@@ -130,7 +130,7 @@ TAGACCA
 >Sequence 3
 ATACA";
 
-$BioPHP = new BioPHP();
+$BioPHP = new \kap\BioPHP();
 $fastaArray = $BioPHP->readFasta($fasta);
 $result = $BioPHP->findLongestSharedMotif($fastaArray);
 echo $result."\n";
