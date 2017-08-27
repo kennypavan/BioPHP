@@ -547,10 +547,7 @@ class BioPHP {
 			}
 		}
 
-		foreach (array_unique($results) as $otf)
-		{
-			echo $otf."\n";
-		}
+		return $results;
 
 	}
 
@@ -659,5 +656,7 @@ TTACACTTTTTAAGGGCCGCTAGCGTTTCAGTCTCTCCGACTGTAAAATGGATG";
 
 
 $BioPHP = new BioPHP();
-$fastaArray = $BioPHP->printORFProteins($sequence);
+$results = $BioPHP->printORFProteins($sequence);
+print_r($results);
+
 */
