@@ -494,6 +494,66 @@ class BioPHP {
 
 	}
 
+	public function getORFProteins($sequence)
+	{
+		$orfProteins = [];
+		
+		for($i=0; $i<strlen($sequence);$i++) 
+		{
+			$newORF = "";
+			if($sequence[$i] == "M"){
+				for ($j=$i; $j<strlen($sequence);$j++) 
+				{
+					if($sequence[$j] != "*"){
+						$newORF .= $sequence[$j];
+					} else {
+						$orfProteins[] = $newORF;
+						break;
+					}
+				}
+				
+			}
+
+		}
+
+		return $orfProteins;
+	}
+
+
+	public function printORFProteins($sequence){
+
+		$fastaArray = $this->readFasta($sequence);
+		$sequence = $fastaArray[0]['sequence'];
+		$frames = $this->getReadingFrames($sequence);
+		$rframes = $this->reverseSequence($sequence);
+		$rframes = $this->complementDnaSequence($rframes);
+		$rframes = $this->getReadingFrames($rframes);
+		$results = [];
+		foreach ($frames as $frame) 
+		{
+			$frame = $this->translateDna($frame);
+			foreach($this->getORFProteins($frame) as $result)
+			{
+				$results[] = $result;	
+			}
+		}
+
+		foreach ($rframes as $rframe) 
+		{
+			$rframe = $this->translateDna($rframe);
+			foreach($this->getORFProteins($rframe) as $result)
+			{
+				$results[] = $result;	
+			}
+		}
+
+		foreach (array_unique($results) as $otf)
+		{
+			echo $otf."\n";
+		}
+
+	}
+
 
 }
 
@@ -579,4 +639,25 @@ $fastaArray = $BioPHP->readFasta($fasta);
 $result = $BioPHP->findLongestSharedMotif($fastaArray);
 echo $result."\n";
 
+//Sample Usage - Find open reading frames
+$sequence = ">Test Sequence
+TCCCCGGACTCCAAACGCTCGGTAGCCGCCCCTGCTCGACATATTTAGCTCCCTGCATTG
+ACGCCCTGGCAGCCCCGATCAATTTTCGTGGTTAAACGCGCGCTCGCAAGGGACATCGAC
+CGGACCACAGAGCATAGCATGCCTTAGGATCGCCTGTCACTGTTCGTCTCCCTATTTGAG
+CACTGTAGCCCCTGGTACCCCCGTCCTGAAGCGTGTGTGATACACGGTCTGCCCAAGATG
+CCCAAAATTTGCATTGCTCGCCGACCTCTTCTTGGTTAGTACCTAAGGCTTCCCCTACCC
+GGGAGCAGCGGCGGGAGATATCTAGCCCGTACGATAGACGATCCCTACCGCGTTGAGCCC
+GAGAAAACTACCAACGTTTTAGCCTCACGATATATGCGTATGACTGGCAAAGAGTGTTTC
+ATGGGATCGGGCTTCAGTAGCTCATAGCTATGAGCTACTGAAGCCCGATCCCATCGGACG
+GAGATTGAACCCAGCCAGTGATACATGACGGGTGGTCCCCAGTTAGCTCATCTGGAATAC
+AGGTTTGATAAGTAAGATCATGTACGAAATTAGAGAGGCCTGAGAATTCGCGTGGATGTT
+CTTAATTGTTGACACTACGGGCATTCACACGTTAAATATGCGCTATTGCTGTTTGCCGAG
+CGTATAGCCGCCTGTACTCCCACGAAGAACAAGAATCGTTTTACGTATCGACGCGTGCTA
+GCAGCCAACTCTAATTACCTACACTTGTAACAAATGTAAAGGGTCTCACGCGTTTGCAAC
+GAGCTAACGCTTCTGCGTCGGTAATCGGTAACTTGCCCCCAATTAGGACGCATATATAAC
+TTACACTTTTTAAGGGCCGCTAGCGTTTCAGTCTCTCCGACTGTAAAATGGATG";
+
+
+$BioPHP = new BioPHP();
+$fastaArray = $BioPHP->printORFProteins($sequence);
 */
