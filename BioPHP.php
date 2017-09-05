@@ -551,6 +551,33 @@ class BioPHP {
 
 	}
 
+	public function findRestrictionSites($sequence, $rangeStart, $rangeEnd){
+
+		$rcSequence = $this->complementDnaSequence($sequence);
+		$results = [];
+
+		for ($i=0; $i<strlen($sequence)-($rangeStart-1); $i++) 
+		{
+
+			for ($j = $rangeStart; $j<=$rangeEnd; $j++) { 	
+
+				if($i + $j > strlen($sequence)){
+					continue;
+				}
+
+				$sequence1 = substr($sequence,$i,$j);
+				$sequence2 = $this->complementDnaSequence($this->reverseSequence($sequence1,$i,$j));
+
+				if($sequence1 == $sequence2){
+					$results[] = [$i+1 => $j];
+				}	
+
+			}
+		}
+
+		return $results;
+
+	}
 
 }
 
@@ -659,4 +686,7 @@ $BioPHP = new BioPHP();
 $results = $BioPHP->printORFProteins($sequence);
 print_r($results);
 
+//Sample Usage - Locating Restriction Sites
+$BioPHP = new BioPHP();
+$results = $BioPHP->findRestrictionSites("TCAATGCATGCGGGTCTATATGCAT", 4, 12);
 */
