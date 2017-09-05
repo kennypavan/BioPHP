@@ -581,7 +581,6 @@ class BioPHP {
 
 }
 
-
 //--------- Sample Usage Below ------------//
 
 /*
