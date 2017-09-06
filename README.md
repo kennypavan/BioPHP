@@ -165,3 +165,10 @@ Array
 
 */
 ```
+
+
+### Locating Restriction Sites between length of 4 and 12
+```php
+$BioPHP = new BioPHP();
+$results = $BioPHP->findRestrictionSites("TCAATGCATGCGGGTCTATATGCAT", 4, 12);
+```
