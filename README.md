@@ -96,7 +96,7 @@ echo $BioPHP->calcMonoIsotopicMass($fastaArray[0]['sequence'])."\n";
 ```
 
 
-### Find Protein Motif using a variable "shorthand" motif search
+### Find protein motif using a variable "shorthand" motif search
 ```php
 $BioPHP = new \kap\BioPHP();
 $results = $BioPHP->findMotifProtein("N{P}[ST]{P}","B5ZC00");
@@ -139,7 +139,7 @@ echo $result."\n";
 ```
 
 
-### Find open reading frames from DNA Sequnce
+### Find open reading frames from DNA sequnce
 
 ```php
 $sequence = ">Test DNA Sequence
@@ -167,7 +167,7 @@ Array
 ```
 
 
-### Locating Restriction Sites between length of 4 and 12
+### Locating restriction sites between length of 4 and 12
 ```php
 $BioPHP = new BioPHP();
 $results = $BioPHP->findRestrictionSites("TCAATGCATGCGGGTCTATATGCAT", 4, 12);
