@@ -452,11 +452,11 @@ class BioPHP {
 		$sequenceCount = count($sequences);
 
 		$inc=1;
-		for ($j=strlen($sequences[0]['sequence']);$j>0;$j--) 
+		for ($j=strlen($sequences[0]['sequence']);$j>0;$j--)
 		{
 
-			for ($i=0;$i<$inc; $i++) 
-			{ 
+			for ($i=0;$i<$inc; $i++)
+			{
 
 				$motifsPossiblities[] = substr($sequences[0]['sequence'], $i, $j);
 
@@ -469,7 +469,7 @@ class BioPHP {
 
 			$motifsShared = 0;
 
-			foreach ($sequences as $sequenceb) 
+			foreach ($sequences as $sequenceb)
 			{
 
 				if(strpos($sequenceb['sequence'], $motifsPossiblity) !== false){
@@ -497,12 +497,12 @@ class BioPHP {
 	public function getORFProteins($sequence)
 	{
 		$orfProteins = [];
-		
-		for($i=0; $i<strlen($sequence);$i++) 
+
+		for($i=0; $i<strlen($sequence);$i++)
 		{
 			$newORF = "";
 			if($sequence[$i] == "M"){
-				for ($j=$i; $j<strlen($sequence);$j++) 
+				for ($j=$i; $j<strlen($sequence);$j++)
 				{
 					if($sequence[$j] != "*"){
 						$newORF .= $sequence[$j];
@@ -511,7 +511,7 @@ class BioPHP {
 						break;
 					}
 				}
-				
+
 			}
 
 		}
@@ -529,21 +529,21 @@ class BioPHP {
 		$rframes = $this->complementDnaSequence($rframes);
 		$rframes = $this->getReadingFrames($rframes);
 		$results = [];
-		foreach ($frames as $frame) 
+		foreach ($frames as $frame)
 		{
 			$frame = $this->translateDna($frame);
 			foreach($this->getORFProteins($frame) as $result)
 			{
-				$results[] = $result;	
+				$results[] = $result;
 			}
 		}
 
-		foreach ($rframes as $rframe) 
+		foreach ($rframes as $rframe)
 		{
 			$rframe = $this->translateDna($rframe);
 			foreach($this->getORFProteins($rframe) as $result)
 			{
-				$results[] = $result;	
+				$results[] = $result;
 			}
 		}
 
@@ -556,10 +556,10 @@ class BioPHP {
 		$rcSequence = $this->complementDnaSequence($sequence);
 		$results = [];
 
-		for ($i=0; $i<strlen($sequence)-($rangeStart-1); $i++) 
+		for ($i=0; $i<strlen($sequence)-($rangeStart-1); $i++)
 		{
 
-			for ($j = $rangeStart; $j<=$rangeEnd; $j++) { 	
+			for ($j = $rangeStart; $j<=$rangeEnd; $j++) {
 
 				if($i + $j > strlen($sequence)){
 					continue;
@@ -570,7 +570,7 @@ class BioPHP {
 
 				if($sequence1 == $sequence2){
 					$results[] = [$i+1 => $j];
-				}	
+				}
 
 			}
 		}
