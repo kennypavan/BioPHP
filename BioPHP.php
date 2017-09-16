@@ -1,6 +1,4 @@
 <?php 
-namespace kap;
-
 /**
  * BioPHP
  *
@@ -9,6 +7,8 @@ namespace kap;
  * @author     Kenny Pavan  <kenpavan@gmail.com>
  * @license    MIT
  */
+
+require(__DIR__.'/vendor/autoload.php');
 
 class BioPHP {
 
@@ -19,6 +19,7 @@ class BioPHP {
 
 
 	public $rnaCodons = ["UUU" => "F","CUU" => "L","AUU" => "I","GUU" => "V","UUC" => "F","CUC" => "L","AUC" => "I","GUC" => "V","UUA" => "L","CUA" => "L","AUA" => "I","GUA" => "V","UUG" => "L","CUG" => "L","AUG" => "M","GUG" => "V","UCU" => "S","CCU" => "P","ACU" => "T","GCU" => "A","UCC" => "S","CCC" => "P","ACC" => "T","GCC" => "A","UCA" => "S","CCA" => "P","ACA" => "T","GCA" => "A","UCG" => "S","CCG" => "P","ACG" => "T","GCG" => "A","UAU" => "Y","CAU" => "H","AAU" => "N","GAU" => "D","UAC" => "Y","CAC" => "H","AAC" => "N","GAC" => "D","UAA" => "Stop",  "CAA" => "Q","AAA" => "K","GAA" => "E","UAG" => "Stop",  "CAG" => "Q","AAG" => "K","GAG" => "E","UGU" => "C","CGU" => "R","AGU" => "S","GGU" => "G","UGC" => "C","CGC" => "R","AGC" => "S","GGC" => "G","UGA" => "Stop",  "CGA" => "R","AGA" => "R","GGA" => "G","UGG" => "W","CGG" => "R","AGG" => "R","GGG" => "G"];
+
 
 	public function normalizeSequence($sequence)
 	{
@@ -251,7 +252,6 @@ class BioPHP {
 	}
 
 
-
 	public function mostLikelyCommonAncestor($sequencesArray)
 	{
 
@@ -312,6 +312,7 @@ class BioPHP {
 		return $output;
 
 	}
+
 
 	//create and array of all matchable amino acids at each position.
 	public function varyingFormsGeneration($varyingSubSequence)
@@ -496,6 +497,7 @@ class BioPHP {
 
 	}
 
+
 	public function getORFProteins($sequence)
 	{
 		$orfProteins = [];
@@ -554,6 +556,7 @@ class BioPHP {
 
 	}
 
+
 	public function findRestrictionSites($sequence, $rangeStart, $rangeEnd)
 	{
 
@@ -583,19 +586,21 @@ class BioPHP {
 
 	}
 
+
 	public function inferringMRnaFromProteinCount($proteinSequence)
 	{
+
+		$codonCounts = array_count_values($this->rnaCodons);
+		$totalCount = new Math_BigInteger($codonCounts['Stop']);
+
 		for ($i=0; $i<strlen($proteinSequence); $i++)
 		{
 
-			//check $rnaCodons array
-
-			//counter
-
-
+			$totalCount = bcmul($totalCount, $codonCounts[$proteinSequence[$i]]);
+			echo $totalCount."\n";
 		}
 
-		return $count;
+		return bcmod($totalCount, 1000000);
 
 	}
 
@@ -700,7 +705,6 @@ GCAGCCAACTCTAATTACCTACACTTGTAACAAATGTAAAGGGTCTCACGCGTTTGCAAC
 GAGCTAACGCTTCTGCGTCGGTAATCGGTAACTTGCCCCCAATTAGGACGCATATATAAC
 TTACACTTTTTAAGGGCCGCTAGCGTTTCAGTCTCTCCGACTGTAAAATGGATG";
 
-
 $BioPHP = new BioPHP();
 $results = $BioPHP->printORFProteins($sequence);
 print_r($results);
@@ -708,4 +712,9 @@ print_r($results);
 //Sample Usage - Locating Restriction Sites
 $BioPHP = new BioPHP();
 $results = $BioPHP->findRestrictionSites("TCAATGCATGCGGGTCTATATGCAT", 4, 12);
+print_r($results);
+
+$BioPHP = new BioPHP();
+$result = $BioPHP->inferringMRnaFromProteinCount("MTIFMFHNKNICTEYMGYYDQQIMQTEHKWYWDFHTFMIPNVFYEDVIKFKMRMLMIPNCFFGPWLFCKLEKCQYYEKATEPAPIVKDYTLFATGGAGREATFWPWFWTDENRPKDYYFQRDGLHHRNEPRLPHATCRRAYYQCEMIQYAIVTSCVLLAWKMFTDYGHTGVASEPKEPQEDIKCMKFPHMSWQKTLTEAFYELFPCYPEEFPNDRPWLLGHGFGPIVCTITAIDTTDVAKNIWKAVFRPHAGNWDIGFHSPCASEGCPDIMFPYFTCHDYKGMMCCFNLTMEVCCKQPRPTGIYMMVERMRIMNNREFAGFKHYREEHIKHYWRFGIFASPFVICWSPKTKGPPTSDWYMRDSEVVTQESELKESWQDMMEQHSMFGIPHCEKERWMNDNWKCKLFYYEVILWISNCECDQHVNCCVAHDPGTQVDWAWTLDMWWDQKYFGFFVRKKGQKYNMHWGAPYWLTNPTEKKDFIQHEQLGPLQTFRHCSSPAPTDVIQHKGEMSTQNTTVMSDEWCIIHMRAKQFKSYLGISLRDGHNKLPLAVKRKVWAMQMIAQEWSCPIKVPKMMMNVPHTITDAVVPEIFQNAHEAMWQRVDSDALACPSTQLMSTEFRNQWMNYNYIMQIMCHITTKWFEPGNNPSIESMVVVTHVDSGINRQFYEGALEHWPHFFWIFEFVMESWSNFYEFYYQACHNYFNVLLIIWKVIAHGPNEPVQWCTCHETIQSKTDNDQIAPISVCDWQIIQMGWVQLFMTTISTVIRLNEKQCPIRYTKMPKFITVIQPLPTYGAQILDQPRREWRYRSLVMQHEYICVWFMHMMDLSFPLLQQVSHKCTRFKFGMQANVWGKQQGDKGVCGNCLCHQFDHPRCRTPRCGKLRDAWALRWVRWKICCPTQDRQYDSHGGSNDIKFINPMGECGACQEHTKVKDQMEHESVALRKNWLTPGLVSLPFHYILWMYWNTAFGAMIPACVRLMPPNVTTLVPQMYWGREHFPGR");
+echo $result."\n";
 */

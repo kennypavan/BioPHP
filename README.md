@@ -5,7 +5,7 @@ BioPHP is an easy to use open source project. BioPHP implements a selection of s
 
 ### Find Reverse Complement
 ```php
-$BioPHP = new \kap\BioPHP();
+$BioPHP = new BioPHP();
 $result = $BioPHP->reverseSequence('ATGAAAGCATC');
 $result = $BioPHP->complementDnaSequence($result);
 //prints TTTCAT
@@ -13,28 +13,28 @@ $result = $BioPHP->complementDnaSequence($result);
 
 ### Calculate GC Content
 ```php
-$BioPHP = new \kap\BioPHP();
+$BioPHP = new BioPHP();
 echo $BioPHP->gcContent('ATGAAAGCATC', 4)."\n";
 //prints 36.3636
 ```
 
 ### Count Point Mutations Between Two Sequences
 ```php
-$BioPHP = new \kap\BioPHP();
+$BioPHP = new BioPHP();
 echo $BioPHP->countPointMutations('CTGATGATGGGAGGAAATTTCA','CTGATGATGCGAGGGAATATCG')."\n";
 //prints 4
 ```
 
 ### Translate DNA Sequence to Amino Acid Sequence
 ```php
-$BioPHP = new \kap\BioPHP();
+$BioPHP = new BioPHP();
 echo $BioPHP->translateDna('CTGATGATGGGAGGAAATTTCAGA')."\n";
 //prints LMMGGNFR
 ```
 
 ### Calculate Monoisotopic Mass
 ```php
-$BioPHP = new \kap\BioPHP();
+$BioPHP = new BioPHP();
 $proteinSequence = $BioPHP->translateDna('CTGATGATGGGAGGAAATTTCAGA')."\n";
 echo $BioPHP->calcMonoIsotopicMass($proteinSequence)."\n\n";
 //prints 906.42041
@@ -42,14 +42,14 @@ echo $BioPHP->calcMonoIsotopicMass($proteinSequence)."\n\n";
 
 ### Finding a Motif in DNA
 ```php
-$BioPHP = new \kap\BioPHP();
+$BioPHP = new BioPHP();
 echo $BioPHP->findMotifDNA('ATAT', 'GTATATCTATATGGCCATAT')."\n";
 //prints 3 9 17
 ```
 
 ### Get Reading Frames
 ```php
-$BioPHP = new \kap\BioPHP();
+$BioPHP = new BioPHP();
 print_r( $BioPHP->getReadingFrames('GTATATCTATATGGCCATAT') );
 
 /*
@@ -77,7 +77,7 @@ GGGCAACT
 ATGGATCT
 ";
 
-$BioPHP = new \kap\BioPHP();
+$BioPHP = new BioPHP();
 $fastaArray = $BioPHP->readFasta($fastaSequence); //read and parse the sequences
 echo $BioPHP->mostLikelyCommonAncestor($fastaArray)."\n";
 
@@ -87,7 +87,7 @@ echo $BioPHP->mostLikelyCommonAncestor($fastaArray)."\n";
 
 ### Get a fasta result from Uniprot and calculate isotpoic mass
 ```php
-$BioPHP = new \kap\BioPHP();
+$BioPHP = new BioPHP();
 $uniprotFasta =  $BioPHP->getUniprotFastaByID("B5ZC00"); //returns the result from Uniprot as a string
 $fastaArray = $BioPHP->readFasta($uniprotFasta); //parses the response
 echo $BioPHP->calcMonoIsotopicMass($fastaArray[0]['sequence'])."\n";
@@ -98,7 +98,7 @@ echo $BioPHP->calcMonoIsotopicMass($fastaArray[0]['sequence'])."\n";
 
 ### Find protein motif using a variable "shorthand" motif search
 ```php
-$BioPHP = new \kap\BioPHP();
+$BioPHP = new BioPHP();
 $results = $BioPHP->findMotifProtein("N{P}[ST]{P}","B5ZC00");
 print_r($results);
 
@@ -130,7 +130,7 @@ TAGACCA
 >Sequence 3
 ATACA";
 
-$BioPHP = new \kap\BioPHP();
+$BioPHP = new BioPHP();
 $fastaArray = $BioPHP->readFasta($fasta);
 $result = $BioPHP->findLongestSharedMotif($fastaArray);
 echo $result."\n";
@@ -171,4 +171,15 @@ Array
 ```php
 $BioPHP = new BioPHP();
 $results = $BioPHP->findRestrictionSites("TCAATGCATGCGGGTCTATATGCAT", 4, 12);
+//returns an array containing postion and length of restrictions
+```
+
+
+### Inferring mRNA from Protein - calculates total different RNA strings from which the protein can be translated
+#### Note: This method requires the use of the PHP Math Big Integer package which is a composer dependency of this project.
+```php
+$BioPHP = new BioPHP();
+$result = $BioPHP->inferringMRnaFromProteinCount("MTIFMFHNKNICTEYMGYYDQQIMQTEHKWYWDFHTFMIPNVFYEDVIKFKMRMLMIPNCFFGPWLFCKLEKCQYYEKATEPAPIVKDYTLFATGGAGREATFWPWFWTDENRPKDYYFQRDGLHHRNEPRLPHATCRRAYYQCEMIQYAIVTSCVLLAWKMFTDYGHTGVASEPKEPQEDIKCMKFPHMSWQKTLTEAFYELFPCYPEEFPNDRPWLLGHGFGPIVCTITAIDTTDVAKNIWKAVFRPHAGNWDIGFHSPCASEGCPDIMFPYFTCHDYKGMMCCFNLTMEVCCKQPRPTGIYMMVERMRIMNNREFAGFKHYREEHIKHYWRFGIFASPFVICWSPKTKGPPTSDWYMRDSEVVTQESELKESWQDMMEQHSMFGIPHCEKERWMNDNWKCKLFYYEVILWISNCECDQHVNCCVAHDPGTQVDWAWTLDMWWDQKYFGFFVRKKGQKYNMHWGAPYWLTNPTEKKDFIQHEQLGPLQTFRHCSSPAPT");
+echo $result."\n";
+//prints 884608
 ```

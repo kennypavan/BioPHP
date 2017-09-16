@@ -1,0 +1,5 @@
+{
+    "require": {
+        "pear/math_biginteger": "^1.0"
+    }
+}
